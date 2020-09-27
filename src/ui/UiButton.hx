@@ -6,11 +6,11 @@ import ui.UiEventType;
 
 class UiButton extends UiLayout
 {
-	//** Publics.
+	// ** Publics.
 
 	public var text(get, set):String;
 	
-	//** Privates.
+	// ** Privates.
 	
 	/** @private */ private var __graphics:Group<Tile>;
 	
@@ -24,11 +24,11 @@ class UiButton extends UiLayout
 		
 		__graphics = new Group<Tile>(3);
 		
-		__graphics.addAt(0, new Tile(null, UiForm.GRAPHIC_BUTTON_0_ID));
+		__graphics.addAt(0, new Tile(null, __form.getGraphic('button_0')));
 		
-		__graphics.addAt(1, new Tile(null, UiForm.GRAPHIC_BUTTON_1_ID));
+		__graphics.addAt(1, new Tile(null, __form.getGraphic('button_1')));
 		
-		__graphics.addAt(2, new Tile(null, UiForm.GRAPHIC_BUTTON_2_ID));
+		__graphics.addAt(2, new Tile(null, __form.getGraphic('button_2')));
 		
 		//** Create a new label class.
 		

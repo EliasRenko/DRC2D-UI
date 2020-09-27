@@ -23,11 +23,11 @@ class UiStrip extends UiLayout
 	
 	private function __initGraphics():Void {
 
-		__graphics.addAt(0, new Tile(null, 0));
+		__graphics.addAt(0, new Tile(null, __form.getGraphic('strip_0')));
 		
-		__graphics.addAt(1, new Tile(null, 1));
+		__graphics.addAt(1, new Tile(null, __form.getGraphic('strip_1')));
 		
-		__graphics.addAt(2, new Tile(null, 2));
+		__graphics.addAt(2, new Tile(null, __form.getGraphic('strip_2')));
 	}
 
 	override public function init():Void 

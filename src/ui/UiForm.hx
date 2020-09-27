@@ -1,5 +1,6 @@
 package ui;
 
+import drc.display.Tileset;
 import drc.display.Uniform;
 import ui.UiControl;
 import drc.types.TextEvent;
@@ -818,6 +819,11 @@ class UiForm extends Entity
 		return __selectedControl;
 	}
 
+	public function getGraphic(name:String):Int {
+
+		return __tilemap.tileset.names.get(name);
+	}
+
 	// ** Getters and setters.
 
 	private function get_height():Float {
@@ -842,6 +848,14 @@ class UiForm extends Entity
 		__container.width = value;
 
 		return value;
+	}
+}
+
+private class __UiTileset extends Tileset {
+
+	public function new() {
+
+		super();
 	}
 }
 
