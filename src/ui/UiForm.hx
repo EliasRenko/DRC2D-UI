@@ -408,7 +408,7 @@ class UiForm extends Entity
 
 		//trace(@:privateAccess __container.__children.members[3] == null);
 		
-		control.release();
+		control.destroy();
 		
 		//trace(@:privateAccess __container.__children.members[3] == null);
 		

@@ -138,17 +138,28 @@ class UiControl extends Object
 		// ** Set the parent layout of the control.
 
 		__form = @:privateAccess __parent.__form;
+
+		__initGraphics();
 	}
 	
-	override public function release():Void 
-	{
-		super.release();
+	override public function release():Void {
 		
+		super.release();
+	}
+	
+	public function destroy():Void {
+
+		if (parent == null) return;
+
 		// ** Remove this control from it's parent.
 
 		__parent.removeControl(this);
 	}
-	
+
+	private function __initGraphics():Void {
+		
+	}
+
 	private function __hitTest():Bool
 	{
 		if (__visible)

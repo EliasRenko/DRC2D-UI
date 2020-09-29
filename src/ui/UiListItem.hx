@@ -136,7 +136,7 @@ class UiListItem<T:UiControl> extends UiLayout
 			
 			if (__form.leftClick)
 			{
-				return;
+				//return;
 			}
 			
 			//** If right click...
@@ -145,7 +145,7 @@ class UiListItem<T:UiControl> extends UiLayout
 			{
 				//__form.selectedControl = this;
 				
-				return;
+				//return;
 			}
 		}
 	}

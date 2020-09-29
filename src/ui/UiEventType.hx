@@ -31,4 +31,6 @@ package ui;
     var ON_DRAG_STOP = 13;
 
     var ON_RESIZE = 13;
+
+    var ON_ITEM_CLICK = 14;
 }

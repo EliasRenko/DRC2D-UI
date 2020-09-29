@@ -52,9 +52,9 @@ class UiLayout extends UiControl
 		__setHitbox(0, 0, width, height);
 	}
 	
-	override public function release():Void 
-	{
-		// ** Get the memberss count.
+	override public function release():Void {
+
+		// ** Get the members count.
 		
 		var i:Int = __controls.count - 1;
 
@@ -62,12 +62,12 @@ class UiLayout extends UiControl
 
 		while (i > -1) {
 
-			__controls.members[i].release();
+			__controls.members[i].destroy();
 
 			i --;
 		}
 
-		//** Super release.
+		// ** Super release.
 		
 		super.release();
 	}
@@ -88,9 +88,27 @@ class UiLayout extends UiControl
 
 	public function removeControl(control:UiControl):Void {
 		
+		control.release();
+
 		// ** Remove the control.
 
 		__controls.remove(control);
+	}
+
+	public function clear():Void {
+		
+		// ** Get the members count.
+		
+		var i:Int = __controls.count - 1;
+
+		// ** Release every child of the control.
+
+		while (i > -1) {
+
+			__controls.members[i].destroy();
+
+			i --;
+		}
 	}
 	
 	override public function update():Void 

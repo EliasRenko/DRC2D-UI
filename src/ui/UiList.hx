@@ -1,5 +1,7 @@
 package ui;
 
+import ui.UiEventType;
+
 class UiList<T:UiControl> extends UiLayout
 {
 	//** Publics.
@@ -43,6 +45,8 @@ class UiList<T:UiControl> extends UiLayout
 		var listItem:UiListItem<T> = new UiListItem<T>(control, 4, __lastItem);
 		
 		addControl(listItem);
+
+		listItem.onEvent.add(__onItem_click, ON_CLICK);
 		
 		control.x += 2;
 		
@@ -60,66 +64,22 @@ class UiList<T:UiControl> extends UiLayout
 		
 		return control;
 	}
-	
-	override public function removeControl(control:UiControl):Void 
-	{
-		
-	}
-	
-	public function dispose():Void
-	{
+
+	override function clear():Void {
+
+		super.clear();
+
 		__lastItem = 4;
 	}
 	
-	override public function update():Void 
-	{
+	override public function update():Void {
+
 		super.update();
 	}
 	
-	override public function updateCollision():Void 
-	{
+	override public function updateCollision():Void {
+
 		super.updateCollision();
-		
-		//__scrollBar.updateCollision();
-		//
-		//if (__scrollBar.collide)
-		//{
-			//trace(__scrollBar.scrollDown);
-			//
-			//if (__scrollBar.scrollUp)
-			//{
-				//for (i in 0...__children.__controls.length) 
-				//{
-					//if (__children.__controls[i] == null)
-					//{
-						//continue;
-						//
-						//__children.__controls[i].y -= 12;
-					//}
-				//}
-				//
-				//return;
-			//}
-			//
-			//if (__scrollBar.scrollDown)
-			//{
-				//for (i in 0...__children.__controls.length) 
-				//{
-					//if (__children.__controls[i] == null)
-					//{
-						//
-						//
-						//continue;
-						//
-						//
-						//
-						//__children.__controls[i].y += 12;
-					//}
-				//}
-				//
-				//return;
-			//}
-		//}
 		
 		if (collide)
 		{
@@ -127,14 +87,14 @@ class UiList<T:UiControl> extends UiLayout
 			
 			if (__form.leftClick)
 			{
-				if (onClickHandler == null)
-				{
-					return;
-				}
-				
-				onClickHandler(this);
+				//trace('Collision: ' + __collisionIndex);
 			}
 		}
+	}
+
+	private function __onItem_click(control:UiControl, type:UiEventType):Void {
+
+		onEvent.dispatch(control, ON_ITEM_CLICK);
 	}
 	
 	//** Getters and setters.

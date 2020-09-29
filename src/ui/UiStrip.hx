@@ -10,18 +10,16 @@ class UiStrip extends UiLayout
 	
 	/** @private **/ private var __graphics:Group<Tile>;
 	
-	public function new(width:Float, x:Float, y:Float) 
-	{
+	public function new(width:Float, x:Float, y:Float) {
+		
 		super(width, 30, x, y);
 		
 		__graphics = new Group<Tile>(3);
 		
 		__type = 'strip';
-
-		__initGraphics();
 	}
 	
-	private function __initGraphics():Void {
+	override function __initGraphics():Void {
 
 		__graphics.addAt(0, new Tile(null, __form.getGraphic('strip_0')));
 		
@@ -30,8 +28,8 @@ class UiStrip extends UiLayout
 		__graphics.addAt(2, new Tile(null, __form.getGraphic('strip_2')));
 	}
 
-	override public function init():Void 
-	{
+	override public function init():Void {
+		
 		super.init();
 		
 		for (i in 0...__graphics.count) 

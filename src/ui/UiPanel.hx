@@ -22,11 +22,9 @@ class UiPanel extends UiLayout
 		super(width, height, x, y);
 		
 		__graphics = new Group<Tile>(9);
-
-		__initGraphics();
 	}
 
-	private function __initGraphics():Void {
+	override function __initGraphics():Void {
 
 		__graphics.addAt(0, new Tile(null, UiForm.GRAPHIC_PANEL_0_ID));
 		

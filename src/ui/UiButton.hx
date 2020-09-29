@@ -24,12 +24,6 @@ class UiButton extends UiLayout
 		
 		__graphics = new Group<Tile>(3);
 		
-		__graphics.addAt(0, new Tile(null, __form.getGraphic('button_0')));
-		
-		__graphics.addAt(1, new Tile(null, __form.getGraphic('button_1')));
-		
-		__graphics.addAt(2, new Tile(null, __form.getGraphic('button_2')));
-		
 		//** Create a new label class.
 		
 		__label = new UiLabel(text, 1, 0, 2);
@@ -43,32 +37,19 @@ class UiButton extends UiLayout
 
 		__type = 'button';
 	}
+
+	override function __initGraphics():Void {
+		
+		__graphics.addAt(0, new Tile(null, __form.getGraphic('button_0')));
+		
+		__graphics.addAt(1, new Tile(null, __form.getGraphic('button_1')));
+		
+		__graphics.addAt(2, new Tile(null, __form.getGraphic('button_2')));
+	}
 	
 	override public function init():Void 
 	{
 		super.init();
-		
-		//__initMember(__label);
-		
-		//__graphic.parentTilemap = @:privateAccess __form.__tilemap;
-		//
-		////** Add the graphic to it's parent.
-		//
-		//@:privateAccess __form.__tilemap.addTile(__graphic);
-		//
-		////** Pass the items width value to the graphic.
-		//
-		//__graphic.width = __width;
-		//
-		////** Pass the items height value to the graphic.
-		//
-		//__graphic.height = __height;
-		//
-		////** Pass the items visibility value to the graphic.
-		//
-		//__graphic.visible = visible;
-		//
-		//__graphic.z = __parent.z - 1;
 		
 		addControl(__label);
 
