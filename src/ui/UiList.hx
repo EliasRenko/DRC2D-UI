@@ -47,6 +47,8 @@ class UiList<T:UiControl> extends UiLayout
 		addControl(listItem);
 
 		listItem.onEvent.add(__onItem_click, ON_CLICK);
+
+		listItem.onEvent.add(__onItem_hover, MOUSE_HOVER);
 		
 		control.x += 2;
 		
@@ -95,6 +97,11 @@ class UiList<T:UiControl> extends UiLayout
 	private function __onItem_click(control:UiControl, type:UiEventType):Void {
 
 		onEvent.dispatch(control, ON_ITEM_CLICK);
+	}
+
+	private function __onItem_hover(control:UiControl, type:UiEventType):Void {
+
+		onEvent.dispatch(control, ON_ITEM_MOUSE_HOVER);
 	}
 	
 	//** Getters and setters.

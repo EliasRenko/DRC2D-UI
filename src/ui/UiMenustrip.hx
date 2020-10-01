@@ -5,8 +5,8 @@ import ui.UiEventType;
 import ui.UiStripPanel;
 import drc.part.Group;
 
-class UiMenustrip extends UiStrip
-{
+class UiMenustrip extends UiStrip {
+
 	// ** Privates.
 	
 	/** @private **/ private var __lastLabel:Float = 6;
@@ -24,8 +24,6 @@ class UiMenustrip extends UiStrip
 		// ** Set the 'type' of the control.
 
 		__type = 'menustrip';
-
-		__stamp_close = new UiStamp(54, width - 20, 9);
 	}
 
 	override public function init():Void 
@@ -50,6 +48,8 @@ class UiMenustrip extends UiStrip
 		//addControl(__stamps.members[0]);
 
 		//addControl(__stamps.members[1]);
+
+		__stamp_close = new UiStamp(__form.getGraphic('stamp_close'), width - 20, 9);
 
 		addControl(__stamp_close);
 	}

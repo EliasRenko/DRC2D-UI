@@ -26,23 +26,23 @@ class UiPanel extends UiLayout
 
 	override function __initGraphics():Void {
 
-		__graphics.addAt(0, new Tile(null, UiForm.GRAPHIC_PANEL_0_ID));
+		__graphics.addAt(0, new Tile(null, __form.getGraphic('panel_0')));
 		
-		__graphics.addAt(1, new Tile(null, UiForm.GRAPHIC_PANEL_1_ID));
+		__graphics.addAt(1, new Tile(null, __form.getGraphic('panel_1')));
 		
-		__graphics.addAt(2, new Tile(null, UiForm.GRAPHIC_PANEL_2_ID));
+		__graphics.addAt(2, new Tile(null, __form.getGraphic('panel_2')));
 		
-		__graphics.addAt(3, new Tile(null, UiForm.GRAPHIC_PANEL_3_ID));
+		__graphics.addAt(3, new Tile(null, __form.getGraphic('panel_3')));
 		
-		__graphics.addAt(4, new Tile(null, UiForm.GRAPHIC_PANEL_4_ID));
+		__graphics.addAt(4, new Tile(null, __form.getGraphic('panel_4')));
 		
-		__graphics.addAt(5, new Tile(null, UiForm.GRAPHIC_PANEL_5_ID));
+		__graphics.addAt(5, new Tile(null, __form.getGraphic('panel_5')));
 		
-		__graphics.addAt(6, new Tile(null, UiForm.GRAPHIC_PANEL_6_ID));
+		__graphics.addAt(6, new Tile(null, __form.getGraphic('panel_6')));
 		
-		__graphics.addAt(7, new Tile(null, UiForm.GRAPHIC_PANEL_7_ID));
+		__graphics.addAt(7, new Tile(null, __form.getGraphic('panel_7')));
 		
-		__graphics.addAt(8, new Tile(null, UiForm.GRAPHIC_PANEL_8_ID));
+		__graphics.addAt(8, new Tile(null, __form.getGraphic('panel_8')));
 	}
 	
 	override public function init():Void 

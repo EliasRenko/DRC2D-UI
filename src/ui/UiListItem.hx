@@ -128,6 +128,15 @@ class UiListItem<T:UiControl> extends UiLayout
 		{
 			__graphic.visible = true;
 			
+			if (__control.type == 'layout') {
+
+				//onEvent.dispatch(__control, MOUSE_HOVER);
+			}
+			else {
+
+				//onEvent.dispatch(__control, MOUSE_HOVER);
+			}
+
 			//** Set the cursor.
 			
 			__form.cursorId = 4;
@@ -154,6 +163,8 @@ class UiListItem<T:UiControl> extends UiLayout
 
 		onEvent.dispatch(__control, ON_CLICK);
 	}
+
+	
 
 	//** Getters and setters.
 	

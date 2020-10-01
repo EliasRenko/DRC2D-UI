@@ -31,8 +31,6 @@ class UiWindow extends UiLayout
 		
 		__label = new UiLabel(text, 1, 6, 1);
 
-		__stamp_close = new UiStamp(54, width - 20, 9);
-
 		__windowStrip = new UiWindowStrip(width, 0, 0);
 		
 		__windowPanel = new UiWindowPanel(width, height - 16, 0, 30);
@@ -51,6 +49,8 @@ class UiWindow extends UiLayout
 		super.addControl(__windowStrip);
 
 		super.addControl(__windowPanel);
+
+		__stamp_close = new UiStamp(__form.getGraphic('stamp_close'), width - 20, 9);
 
 		__windowStrip.addControl(__label);
 
@@ -142,23 +142,25 @@ private class UiWindowPanel extends UiPanel {
 
 	override function __initGraphics() {
 		
-		__graphics.addAt(0, new Tile(null, 29));
+		super.__initGraphics();
+
+		// __graphics.addAt(0, new Tile(null, 29));
 		
-		__graphics.addAt(1, new Tile(null, 30));
+		// __graphics.addAt(1, new Tile(null, 30));
 		
-		__graphics.addAt(2, new Tile(null, 31));
+		// __graphics.addAt(2, new Tile(null, 31));
 		
-		__graphics.addAt(3, new Tile(null, UiForm.GRAPHIC_PANEL_3_ID));
+		// __graphics.addAt(3, new Tile(null, UiForm.GRAPHIC_PANEL_3_ID));
 		
-		__graphics.addAt(4, new Tile(null, UiForm.GRAPHIC_PANEL_4_ID));
+		// __graphics.addAt(4, new Tile(null, UiForm.GRAPHIC_PANEL_4_ID));
 		
-		__graphics.addAt(5, new Tile(null, UiForm.GRAPHIC_PANEL_5_ID));
+		// __graphics.addAt(5, new Tile(null, UiForm.GRAPHIC_PANEL_5_ID));
 		
-		__graphics.addAt(6, new Tile(null, UiForm.GRAPHIC_PANEL_6_ID));
+		// __graphics.addAt(6, new Tile(null, UiForm.GRAPHIC_PANEL_6_ID));
 		
-		__graphics.addAt(7, new Tile(null, UiForm.GRAPHIC_PANEL_7_ID));
+		// __graphics.addAt(7, new Tile(null, UiForm.GRAPHIC_PANEL_7_ID));
 		
-		__graphics.addAt(8, new Tile(null, UiForm.GRAPHIC_PANEL_8_ID));
+		// __graphics.addAt(8, new Tile(null, UiForm.GRAPHIC_PANEL_8_ID));
 	}
 
 	override function set_height(value:Float):Float {
@@ -178,10 +180,10 @@ private class UiWindowStrip extends UiStrip {
 
 	override function __initGraphics() {
 		
-		__graphics.addAt(0, new Tile(null, 26));
+		__graphics.addAt(0, new Tile(null, __form.getGraphic('strip_0')));
 		
-		__graphics.addAt(1, new Tile(null, 27));
+		__graphics.addAt(1, new Tile(null, __form.getGraphic('strip_1')));
 		
-		__graphics.addAt(2, new Tile(null, 28));
+		__graphics.addAt(2, new Tile(null, __form.getGraphic('strip_2')));
 	}
 } 

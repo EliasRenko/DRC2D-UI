@@ -209,7 +209,7 @@ class UiForm extends Entity
 
 		__charmap.blendFactors.destination = BlendFactor.ONE_MINUS_SRC_ALPHA;
 		
-		__tilemap = new Tilemap(__profile, [Resources.loadTexture("res/graphics/ui.psd")], Resources.loadTileset("res/graphics/ui.json"));
+		__tilemap = new Tilemap(__profile, [Resources.loadTexture("res/graphics/gui.png")], Resources.loadTileset("res/graphics/gui.json"));
 
 		__cursor = new Tile(__tilemap, 3, 0, 0);
 		

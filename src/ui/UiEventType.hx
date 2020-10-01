@@ -33,4 +33,10 @@ package ui;
     var ON_RESIZE = 13;
 
     var ON_ITEM_CLICK = 14;
+
+    var ON_ITEM_MOUSE_HOVER = 15;
+
+    var ON_ITEM_MOUSE_ENTER = 16;
+
+    var ON_ITEM_MOUSE_LEAVE = 17;
 }
