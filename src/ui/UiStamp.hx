@@ -109,8 +109,8 @@ class UiStamp extends UiControl
 
 		//** If collide...
 		
-		if (collide)
-		{
+		if (collide) {
+			
 			// ** Set the cursor.
 			
 			if (!hover) {

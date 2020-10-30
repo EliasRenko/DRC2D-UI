@@ -3,8 +3,8 @@ package ui;
 import drc.display.Text;
 import ui.UiEventType;
 
-class UiLabel extends UiControl
-{
+class UiLabel extends UiControl {
+
 	// ** Publics.
 	
 	public var fieldWidth(get, set):Float;
@@ -13,7 +13,7 @@ class UiLabel extends UiControl
 
 	public var text(get, set):String;
 	
-	public var scale:Int;
+	public var scale(get, set):Float;
 
 	public var size(get, null):UInt;
 
@@ -23,7 +23,7 @@ class UiLabel extends UiControl
 	
 	/** @private **/ private var __bitmapText:Text;
 
-	/** @private **/ private var __scale:Int = 1;
+	/** @private **/ private var __scale:Float = 1;
 	
 	public function new(text:String, heading:UInt = 0, x:Float = 0, y:Float = 0) 
 	{
@@ -214,6 +214,18 @@ class UiLabel extends UiControl
 		//** Return.
 		
 		return text;
+	}
+
+	public function get_scale():Float {
+
+		return __scale;
+	}
+
+	public function set_scale(value:Float):Float {
+		
+		__bitmapText.scale = value;
+
+		return __scale = value;
 	}
 	
 	override function set_visible(value:Bool):Bool 

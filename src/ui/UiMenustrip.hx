@@ -11,7 +11,7 @@ class UiMenustrip extends UiStrip {
 	
 	/** @private **/ private var __lastLabel:Float = 6;
 	
-	/** @private **/ private var __panels:Group<UiStripPanel> = new Group<UiStripPanel>();
+	/** @private **/ private var __panels:Group<__UiStripPanel> = new Group<__UiStripPanel>();
 	
 	/** @private **/ private var __stamp_close:UiStamp;
 
@@ -26,12 +26,14 @@ class UiMenustrip extends UiStrip {
 		__type = 'menustrip';
 	}
 
-	override public function init():Void 
-	{
+	override public function init():Void {
+		
+		// ** Super.
+
 		super.init();
 		
-		for (i in 0...__panels.count)
-		{
+		for (i in 0...__panels.count) {
+
 			__controls.members[i].x = __lastLabel;
 			
 			//** Call initMember method.
@@ -49,32 +51,30 @@ class UiMenustrip extends UiStrip {
 
 		//addControl(__stamps.members[1]);
 
-		__stamp_close = new UiStamp(__form.getGraphic('stamp_close'), width - 20, 9);
+		__stamp_close = new UiStamp(__form.getGraphic('stamp_close'), width - 22, 6);
 
-		addControl(__stamp_close);
+		__addControl(__stamp_close);
 	}
 	
-	override public function release():Void 
-	{
+	override public function release():Void {
+
 		super.release();
 	}
 	
-	public function addLabel(text:String):Void
-	{
+	public function addLabel(text:String):Void {
+
 		var _label:UiMenustripLabel = new UiMenustripLabel(text, __lastLabel, 1);
 
-		addControl(_label);
+		__addControl(_label);
 
 		_label.onEvent.add(__onLabel_click, ON_CLICK);
 
-		var _stripPanel:UiStripPanel = new UiStripPanel(128, _label.x, 24);
+		var _stripPanel:__UiStripPanel = new __UiStripPanel(128, _label.x, 24);
 
 		_label.stripPanel = _stripPanel;
-
-		//@:privateAccess _stripPanel.__parent = this;
 		
-		if (__form != null)
-		{
+		if (__form != null) {
+
 			//** Call initMember method.
 			
 			__initMember(_stripPanel);
@@ -87,8 +87,8 @@ class UiMenustrip extends UiStrip {
 		__panels.add(_stripPanel);
 	}
 	
-	public function addOption(text:String, index:UInt, handler:UiControl->UiEventType->Void = null)
-	{
+	public function addOption(text:String, index:UInt, handler:UiControl->UiEventType->Void = null) {
+
 		#if debug
 
 		if (__panels.members[index] == null) throw 'Invalid option index.';
@@ -105,8 +105,8 @@ class UiMenustrip extends UiStrip {
 		__panels.members[index].addControl(_label);
 	}
 	
-	private function __hideList(control:UiControl):Void
-	{
+	private function __hideList(control:UiControl):Void {
+
 		control.visible = false;
 	}
 	
@@ -114,8 +114,8 @@ class UiMenustrip extends UiStrip {
 
 		super.update();
 		
-		for (i in 0...__panels.count)
-		{
+		for (i in 0...__panels.count) {
+
 			__panels.members[i].update();
 		}
 	}
@@ -124,8 +124,8 @@ class UiMenustrip extends UiStrip {
 
 		super.updateCollision();
 
-		for (i in 0...__panels.count)
-		{
+		for (i in 0...__panels.count) {
+
 			__panels.members[i].updateCollision();
 		}
 	}
@@ -163,13 +163,13 @@ class UiMenustrip extends UiStrip {
 
 		super.set_width(value);
 
-		__stamp_close.x = __width - 20;
+		__stamp_close.x = __width - 22;
 
 		return __width;
 	}
 
-	override function set_z(value:Float):Float 
-	{
+	override function set_z(value:Float):Float {
+
 		super.set_z(value);
 
 		for (i in 0...__panels.count)
@@ -185,10 +185,68 @@ private class UiMenustripLabel extends UiLabel {
 
 	// ** Publics.
 
-	public var stripPanel:UiStripPanel;
+	public var stripPanel:__UiStripPanel;
 
 	public function new(text:String, x:Float = 0, y:Float = 0) {
 
 		super(text, 1, x, y);
+	}
+}
+
+private class __UiStripPanel extends UiPanel {
+
+	/** @private **/ private var __lastItem:Float = 4;
+
+	/** @private **/ private var __list:UiList<UiControl>;
+
+	public function new(width:Float = 128, x:Float = 0, y:Float = 0) {
+
+		super(width, 32, x, y);
+
+		__list = new UiList(width, 32, 0, 0);
+	}
+
+	override public function init():Void {
+
+		super.init();
+
+		super.addControl(__list);
+
+		height = __list.height;
+	}
+	
+	override public function release():Void {
+
+		super.release();
+	}
+
+	override function addControl(control:UiControl):UiControl {
+
+		control.x = 8;
+		
+		__lastItem += control.height;
+
+		if (__form != null) {
+
+			height = __list.height;
+		}
+
+		__list.addListItem(control);
+
+		return control;
+	}
+
+	override public function onFocusGain():Void {
+
+		super.onFocusGain();
+
+		visible = true;
+	}
+	
+	override public function onFocusLost():Void {
+
+		super.onFocusLost();
+		
+		visible = false;
 	}
 }

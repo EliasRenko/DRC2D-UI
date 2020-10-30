@@ -135,7 +135,7 @@ class UiForm extends Entity
 	
 	/** @private */ private var __dialog:UiDialog;
 	
-	/** @private */ private var __container:UiContainer;
+	/** @private */ private var __container:UiLayout;
 	
 	/** @private */ private var __charmap:Charmap;
 	
@@ -173,7 +173,7 @@ class UiForm extends Entity
 		
 		//Common.input.mouse.showCursor(false);
 		
-		__container = new UiContainer(width, height);
+		__container = new UiLayout(width, height);
 		
 		__container.z = 0;
 		
@@ -287,7 +287,7 @@ class UiForm extends Entity
 
 			_textfield.restriction = _restriction;
 
-			var _container:UiContainer = new UiContainer(128, 32);
+			var _container:UiLayout = new UiLayout(128, 32);
 
 			_container.addControl(_label);
 
@@ -883,7 +883,7 @@ private class FormEditor {
 		Resources.saveText(path, file);
 	}
 
-	private function __saveJsonControls(container:UiContainer):String {
+	private function __saveJsonControls(container:UiLayout):String {
 
 		var file:String = '';
 

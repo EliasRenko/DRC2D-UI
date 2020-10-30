@@ -4,18 +4,24 @@ import ui.UiContainer;
 import drc.display.Tile;
 import drc.part.Group;
 
-class UiStrip extends UiLayout
-{
+class UiStrip extends UiContainer {
+	
 	//** Privates.
 	
 	/** @private **/ private var __graphics:Group<Tile>;
 	
 	public function new(width:Float, x:Float, y:Float) {
 		
+		// ** Super.
+
 		super(width, 30, x, y);
 		
+		// ** Create new graphic group.
+
 		__graphics = new Group<Tile>(3);
 		
+		// ** Set the `type` of the control.
+
 		__type = 'strip';
 	}
 	
@@ -32,8 +38,8 @@ class UiStrip extends UiLayout
 		
 		super.init();
 		
-		for (i in 0...__graphics.count) 
-		{
+		for (i in 0...__graphics.count) {
+
 			__graphics.members[i].parentTilemap = @:privateAccess __form.__tilemap;
 			
 			__graphics.members[i].visible = visible;
@@ -52,65 +58,65 @@ class UiStrip extends UiLayout
 		__setGraphicY();
 	}
 	
-	override public function release():Void 
-	{
-		for (i in 0...__graphics.count) 
-		{
+	override public function release():Void {
+
+		for (i in 0...__graphics.count) {
+
 			@:privateAccess __form.__tilemap.removeTile(__graphics.members[i]);
 		}
 		
 		super.release();
 	}
 	
-	private function __setGraphicX():Void
-	{
-		for (i in 0...__graphics.count) 
-		{
+	private function __setGraphicX():Void {
+
+		for (i in 0...__graphics.count) {
+
 			__graphics.members[i].x = __x + __offsetX;
 		}
 	}
 	
-	private function __setGraphicY():Void
-	{
-		for (i in 0...__graphics.count) 
-		{
+	private function __setGraphicY():Void {
+
+		for (i in 0...__graphics.count) {
+
 			__graphics.members[i].y = __y + __offsetY;
 		}
 	}
 	
 	//** Getters and setters.
 	
-	override function set_height(value:Float):Float
-	{
+	override function set_height(value:Float):Float {
+
 		return __height;
 	}
 	
-	override function __setOffsetX(value:Float):Void 
-	{
+	override function __setOffsetX(value:Float):Void {
+
 		super.__setOffsetX(value);
 		
 		__setGraphicX();
 	}
 	
-	override function __setOffsetY(value:Float):Void 
-	{
+	override function __setOffsetY(value:Float):Void {
+
 		super.__setOffsetY(value);
 		
 		__setGraphicY();
 	}
 	
-	override function set_visible(value:Bool):Bool 
-	{
-		for (i in 0...__graphics.count)
-		{
+	override function set_visible(value:Bool):Bool {
+
+		for (i in 0...__graphics.count) {
+
 			__graphics.members[i].visible = value;
 		}
 		
 		return super.set_visible(value);
 	}
 	
-	override function set_x(value:Float):Float 
-	{
+	override function set_x(value:Float):Float {
+
 		super.set_x(value);
 		
 		__setGraphicX();
@@ -118,8 +124,8 @@ class UiStrip extends UiLayout
 		return value;
 	}
 	
-	override function set_y(value:Float):Float 
-	{
+	override function set_y(value:Float):Float {
+
 		super.set_y(value);
 		
 		__setGraphicY();
@@ -127,10 +133,10 @@ class UiStrip extends UiLayout
 		return value;
 	}
 	
-	override function set_z(value:Float):Float 
-	{
-		for (i in 0...__graphics.count)
-		{
+	override function set_z(value:Float):Float {
+
+		for (i in 0...__graphics.count) {
+
 			__graphics.members[i].z = value;
 		}
 		
@@ -139,8 +145,8 @@ class UiStrip extends UiLayout
 	
 	override function set_width(value:Float):Float {
 
-		if (value < 48)
-		{
+		if (value < 48) {
+
 			value = 48;
 		}
 
@@ -149,6 +155,8 @@ class UiStrip extends UiLayout
 		__graphics.members[1].width = __width - 60;
 		
 		__graphics.members[2].offsetX = __width - 30;
+
+		__setGraphicX();
 		
 		return value;
 	}

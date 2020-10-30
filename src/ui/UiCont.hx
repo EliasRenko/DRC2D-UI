@@ -3,7 +3,7 @@ package ui;
 import drc.part.Group;
 import ui.UiEventType;
 
-class UiContainer extends UiControl {
+class UiCont extends UiControl {
 
 	// ** Publics.
 
@@ -133,17 +133,6 @@ class UiContainer extends UiControl {
 
 		if (collide) {
 
-			if (hover) {
-
-				onMouseHover();
-			}
-			else {
-
-				hover = true;
-
-				onMouseEnter();
-			}
-
 			// ** For every control...
 			
 			for (i in 0...__controls.count) {
@@ -173,25 +162,27 @@ class UiContainer extends UiControl {
 					return;
 				}
 			}
+			
+			if (hover) {
+
+				onMouseHover();
+			}
+			else {
+
+				__form.hoverControl = this;
+			}
 
 			//** If right click...
 			
-			if (__allow) {
-
-				if (__form.leftClick) {
-
+			if (__allow)
+			{
+				if (__form.leftClick)
+				{
 					__form.selectedControl = this;
 	
 					__onClick();
 				}
 			}
-		}
-
-		if (hover) {
-
-			hover = false;
-
-			onMouseLeave();
 		}
 	}
 	
@@ -225,6 +216,15 @@ class UiContainer extends UiControl {
 		// ** Call init method.
 		
 		control.init();
+	}
+
+	private function __onClick():Void {
+
+		onEvent.dispatch(this, ON_CLICK);
+	}
+
+	private function __onRightClick():Void {
+
 	}
 
 	override private function __setMask(x:Float, y:Float, width:Float, height:Float):Void {

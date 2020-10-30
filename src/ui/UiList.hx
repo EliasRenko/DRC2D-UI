@@ -1,8 +1,9 @@
 package ui;
 
 import ui.UiEventType;
+import drc.display.Tile;
 
-class UiList<T:UiControl> extends UiLayout
+class UiList<T:UiControl> extends UiContainer
 {
 	//** Publics.
 	
@@ -19,12 +20,12 @@ class UiList<T:UiControl> extends UiLayout
 		onClickHandler = handler;
 	}
 	
-	override public function init():Void 
-	{
+	override public function init():Void {
+
 		super.init();
 		
-		for (i in 0...__controls.count) 
-		{
+		for (i in 0...__controls.count) {
+
 			__controls.members[i].y = __lastItem;
 			
 			__lastItem += __controls.members[i].height;
@@ -33,18 +34,18 @@ class UiList<T:UiControl> extends UiLayout
 		}
 	}
 	
-	override public function release():Void 
-	{
+	override public function release():Void {
+		
 		super.release();
 	}
 	
-	public function addListItem(control:T):UiControl
-	{
+	public function addListItem(control:T):UiControl {
+
 		//var item:UiControl = addControl(new UiListItem(control, 4, __lastItem, onLeftClick, onRightClick));
 		
 		var listItem:UiListItem<T> = new UiListItem<T>(control, 4, __lastItem);
 		
-		addControl(listItem);
+		__addControl(listItem);
 
 		listItem.onEvent.add(__onItem_click, ON_CLICK);
 
@@ -57,8 +58,8 @@ class UiList<T:UiControl> extends UiLayout
 			//control.y += (control.height / 2) - 11;
 		//}
 		
-		if (__form != null)
-		{
+		if (__form != null) {
+			
 			__lastItem += listItem.height;
 			
 			height = __lastItem + 4;
@@ -76,6 +77,13 @@ class UiList<T:UiControl> extends UiLayout
 	
 	override public function update():Void {
 
+		if (__collisionIndex > -1) {
+
+			var item:UiListItem<Dynamic> = cast(__controls.members[__collisionIndex], UiListItem<Dynamic>);
+
+			@:privateAccess item.__graphic.visible = false;
+		}
+
 		super.update();
 	}
 	
@@ -83,12 +91,12 @@ class UiList<T:UiControl> extends UiLayout
 
 		super.updateCollision();
 		
-		if (collide)
-		{
+		if (collide) {
+
 			//** Call updateCollision method of the scroll bar.
 			
-			if (__form.leftClick)
-			{
+			if (__form.leftClick) {
+
 				//trace('Collision: ' + __collisionIndex);
 			}
 		}
@@ -101,9 +109,17 @@ class UiList<T:UiControl> extends UiLayout
 
 	private function __onItem_hover(control:UiControl, type:UiEventType):Void {
 
-		onEvent.dispatch(control, ON_ITEM_MOUSE_HOVER);
+		var item:UiListItem<Dynamic> = cast(control, UiListItem<Dynamic>);
+
+		@:privateAccess item.__graphic.visible = true;
+
+		onEvent.dispatch(item.control, ON_ITEM_MOUSE_HOVER);
 	}
 	
+	override function onMouseLeave() {
+
+	}
+
 	//** Getters and setters.
 	
 	override function set_height(value:Float):Float 
@@ -140,5 +156,25 @@ class UiList<T:UiControl> extends UiLayout
 	override function set_z(value:Float):Float 
 	{
 		return super.set_z(value);
+	}
+}
+
+private class __UiListItem<T:UiControl> extends UiContainer {
+
+	// ** Privates.
+
+	/** @private **/ private var __graphic:Tile;
+
+	public function new(control:T, x:Float = 0, y:Float = 0) {
+
+		super(control.width, control.height, x, y);
+		
+		__addControl(control);
+
+		//control.onEvent.add(__onItemHover, UiEventType.ON_ITEM_MOUSE_HOVER);
+		
+		//** Create a new graphic class.
+
+		__graphic = new Tile(null, null);
 	}
 }

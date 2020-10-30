@@ -3,8 +3,8 @@ package ui;
 import drc.part.Group;
 import ui.UiEventType;
 
-class UiContainer extends UiControl {
-
+class UiLayout extends UiControl
+{
 	// ** Publics.
 
 	public var childrenCount(get, null):Int = 0;
@@ -18,7 +18,7 @@ class UiContainer extends UiControl {
 	/** @private **/ private var __collisionIndex:Int = -1;
 	
 	public function new(width:Float, height:Float, x:Float = 0, y:Float = 0) {
-
+		
 		//** Super.
 		
 		super(x, y);
@@ -31,19 +31,19 @@ class UiContainer extends UiControl {
 		
 		__height = height;
 
-		__type = 'container';
+		__type = 'layout';
 	}
 	
-	override public function init():Void {
-
+	override public function init():Void 
+	{
 		//** Super init.
 		
 		super.init();
 
 		//** For each child...
 		
-		for (i in 0...__controls.count) {
-
+		for (i in 0...__controls.count)
+		{
 			//** Init every child.
 			
 			__initMember(__controls.members[i]);
@@ -74,7 +74,7 @@ class UiContainer extends UiControl {
 		super.release();
 	}
 
-	private function __addControl(control:UiControl):UiControl {
+	public function addControl(control:UiControl):UiControl {
 
 		//** If the layout is active...
 		
@@ -88,7 +88,7 @@ class UiContainer extends UiControl {
 		return __controls.add(control);
 	}
 
-	private function __removeControl(control:UiControl):Void {
+	public function removeControl(control:UiControl):Void {
 		
 		control.release();
 
@@ -113,13 +113,18 @@ class UiContainer extends UiControl {
 		}
 	}
 	
-	override public function update():Void {
-
+	override public function update():Void 
+	{
 		super.update();
 
 		__collisionIndex = -1;
 
 		for (i in 0...__controls.count) {
+			
+			// if (__members.members[i] == null)
+			// {
+			// 	continue;
+			// }
 			
 			__controls.members[i].update();
 		}
@@ -131,23 +136,12 @@ class UiContainer extends UiControl {
 
 		// ** If collide...
 
-		if (collide) {
-
-			if (hover) {
-
-				onMouseHover();
-			}
-			else {
-
-				hover = true;
-
-				onMouseEnter();
-			}
-
+		if (collide)
+		{
 			// ** For every control...
 			
-			for (i in 0...__controls.count) {
-
+			for (i in 0...__controls.count)
+			{
 				// ** Set the collision index.
 
 				__collisionIndex = i;
@@ -168,35 +162,37 @@ class UiContainer extends UiControl {
 
 				// ** If collision has been found.
 
-				if (__controls.members[i].collide) {
-
+				if (__controls.members[i].collide)
+				{
 					return;
 				}
+			}
+			
+			if (hover) {
+
+				onMouseHover();
+			}
+			else {
+
+				__form.hoverControl = this;
 			}
 
 			//** If right click...
 			
-			if (__allow) {
-
-				if (__form.leftClick) {
-
+			if (__allow)
+			{
+				if (__form.leftClick)
+				{
 					__form.selectedControl = this;
 	
 					__onClick();
 				}
 			}
 		}
-
-		if (hover) {
-
-			hover = false;
-
-			onMouseLeave();
-		}
 	}
 	
-	private function __initMember(control:UiControl):Void {
-		
+	private function __initMember(control:UiControl):Void
+	{
 		@:privateAccess control.__parent = this;
 		
 		// ** Set the offsetX of the control.
@@ -225,6 +221,15 @@ class UiContainer extends UiControl {
 		// ** Call init method.
 		
 		control.init();
+	}
+
+	private function __onClick():Void {
+
+		onEvent.dispatch(this, ON_CLICK);
+	}
+
+	private function __onRightClick():Void {
+
 	}
 
 	override private function __setMask(x:Float, y:Float, width:Float, height:Float):Void {
@@ -261,8 +266,8 @@ class UiContainer extends UiControl {
 
 	override function set_visible(value:Bool):Bool {
 
-		for (i in 0...__controls.count) {
-			
+		for (i in 0...__controls.count)
+		{
 			// ** Set the visible property of the member.
 			
 			__controls.members[i].visible = value;
@@ -275,8 +280,8 @@ class UiContainer extends UiControl {
 
 		// ** For each child...
 		
-		for (i in 0...__controls.count) {
-
+		for (i in 0...__controls.count)
+		{
 			// ** Set the offsetX property of the member.
 			
 			@:privateAccess __controls.members[i].__setOffsetX(value + __offsetX);
@@ -291,8 +296,8 @@ class UiContainer extends UiControl {
 
 		//** For each child...
 		
-		for (i in 0...__controls.count) {
-
+		for (i in 0...__controls.count)
+		{
 			//** Set the offsetY property of the member.
 			
 			@:privateAccess __controls.members[i].__setOffsetY(value + __offsetY);
@@ -307,8 +312,8 @@ class UiContainer extends UiControl {
 
 		//** For each child...
 		
-		for (i in 0...__controls.count) {
-
+		for (i in 0...__controls.count)
+		{
 			//** Set the z property of the member.
 			
 			__controls.members[i].z = value;
@@ -319,22 +324,22 @@ class UiContainer extends UiControl {
 		return super.set_z(value);
 	}
 
-	override function __setOffsetX(value:Float):Void {
-
+	override function __setOffsetX(value:Float):Void 
+	{
 		super.__setOffsetX(value);
 		
-		for (i in 0...__controls.count) {
-
+		for (i in 0...__controls.count)
+		{
 			@:privateAccess __controls.members[i].__setOffsetX(x + value);
 		}
 	}
 		
-	override function __setOffsetY(value:Float):Void {
-
+	override function __setOffsetY(value:Float):Void 
+	{
 		super.__setOffsetY(value);
 		
-		for (i in 0...__controls.count) {
-
+		for (i in 0...__controls.count)
+		{
 			@:privateAccess __controls.members[i].__setOffsetY(y + value);
 		}
 	}

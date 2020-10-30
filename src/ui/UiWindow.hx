@@ -40,8 +40,8 @@ class UiWindow extends UiLayout
 		type = 'window';
 	}
 	
-	override public function init():Void 
-	{
+	override public function init():Void {
+
 		// ** Super Init.
 
 		super.init();
@@ -50,7 +50,7 @@ class UiWindow extends UiLayout
 
 		super.addControl(__windowPanel);
 
-		__stamp_close = new UiStamp(__form.getGraphic('stamp_close'), width - 20, 9);
+		__stamp_close = new UiStamp(__form.getGraphic('stamp_close'), width - 22, 6);
 
 		__windowStrip.addControl(__label);
 
@@ -185,5 +185,10 @@ private class UiWindowStrip extends UiStrip {
 		__graphics.addAt(1, new Tile(null, __form.getGraphic('strip_1')));
 		
 		__graphics.addAt(2, new Tile(null, __form.getGraphic('strip_2')));
+	}
+
+	public function addControl(control:UiControl):UiControl {
+		
+		return super.__addControl(control);
 	}
 } 

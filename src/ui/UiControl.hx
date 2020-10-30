@@ -5,8 +5,8 @@ import ui.UiEventType;
 import drc.math.Rectangle;
 import drc.part.Object;
 
-class UiControl extends Object
-{
+class UiControl extends Object {
+
 	// ** Publics.
 	
 	/**
@@ -45,7 +45,7 @@ class UiControl extends Object
 	/**
 	 * The parent class of the control. Cannot be set.
 	 */
-	public var parent(get, null):UiControl;
+	public var parent(get, null):UiContainer;
 	
 	public var onEvent:UiEvent;
 
@@ -102,7 +102,7 @@ class UiControl extends Object
 	
 	/** @private **/ private var __maskBox:Rectangle;
 	
-	/** @private **/ private var __parent:UiLayout;
+	/** @private **/ private var __parent:UiContainer;
 	
 	/** @private **/ private var __type:String;
 
@@ -116,8 +116,8 @@ class UiControl extends Object
 	
 	/** @private **/ private var __width:Float;
 	
-	public function new(x:Float = 0, y:Float = 0) 
-	{		
+	public function new(x:Float = 0, y:Float = 0) {
+	
 		//** Pass the x value to it's variable counterpart.
 		
 		__x = x;
@@ -131,8 +131,8 @@ class UiControl extends Object
 		onEvent = new UiEvent();
 	}
 	
-	override public function init():Void 
-	{
+	override public function init():Void {
+
 		super.init();
 		
 		// ** Set the parent layout of the control.
@@ -153,21 +153,21 @@ class UiControl extends Object
 
 		// ** Remove this control from it's parent.
 
-		__parent.removeControl(this);
+		@:privateAccess __parent.__removeControl(this);
 	}
 
 	private function __initGraphics():Void {
 		
 	}
 
-	private function __hitTest():Bool
-	{
-		if (__visible)
-		{
-			if (__form.mouseX > __hitbox.x + __x + __offsetX && __form.mouseY > __hitbox.y + __y + __offsetY)
-			{
-				if (__form.mouseX <= __hitbox.width + __x + __offsetX && __form.mouseY <= __hitbox.height + __y + __offsetY)
-				{
+	private function __hitTest():Bool {
+
+		if (__visible) {
+
+			if (__form.mouseX > __hitbox.x + __x + __offsetX && __form.mouseY > __hitbox.y + __y + __offsetY) {
+
+				if (__form.mouseX <= __hitbox.width + __x + __offsetX && __form.mouseY <= __hitbox.height + __y + __offsetY) {
+
 					return true;
 				}
 			}
@@ -184,37 +184,37 @@ class UiControl extends Object
 
 	}
 
-	private function __setHitbox(x:Float, y:Float, width:Float, height:Float):Void
-	{
+	private function __setHitbox(x:Float, y:Float, width:Float, height:Float):Void {
+
 		__hitbox = new Rectangle(x, y, width, height);
 	}
 	
-	private function __setOffsetX(value:Float):Void
-	{
+	private function __setOffsetX(value:Float):Void {
+
 		__offsetX = value;
 	}
 	
-	private function __setOffsetY(value:Float):Void
-	{
+	private function __setOffsetY(value:Float):Void {
+
 		__offsetY = value;
 	}
 	
-	private function __setMask(x:Float, y:Float, width:Float, height:Float):Void
-	{
+	private function __setMask(x:Float, y:Float, width:Float, height:Float):Void {
+
 		__mask = true;
 		
 		__maskBox = new Rectangle(x, y, width, height);
 	}
 	
-	public function update():Void
-	{
-		__collide = false;
+	public function update():Void {
+
+		//__collide = false;
 		
 		__allow = true;
 	}
 	
-	public function updateCollision():Void
-	{
+	public function updateCollision():Void {
+
 		__collide = __hitTest();
 
 		#if debug
@@ -235,15 +235,24 @@ class UiControl extends Object
 		#end
 	}
 	
-	public function onFocusGain():Void
-	{
+	private function __onClick():Void {
+
+		onEvent.dispatch(this, ON_CLICK);
+	}
+
+	private function __onRightClick():Void {
+
+	}
+
+	public function onFocusGain():Void {
+
 		__focused = true;
 
 		onEvent.dispatch(this, ON_FOCUS_GAIN);
 	}
 	
-	public function onFocusLost():Void
-	{
+	public function onFocusLost():Void {
+
 		__focused = false;
 
 		onEvent.dispatch(this, ON_FOCUS_LOST);
@@ -275,8 +284,8 @@ class UiControl extends Object
 
 	//** Getters and setters.
 	
-	private function get_collide():Bool
-	{
+	private function get_collide():Bool {
+
 		return __collide;
 	}
 	
@@ -285,13 +294,13 @@ class UiControl extends Object
 		return __focused;
 	}
 
-	private function get_height():Float
-	{
+	private function get_height():Float {
+
 		return __height;
 	}
 	
-	private function set_height(value:Float):Float
-	{
+	private function set_height(value:Float):Float {
+
 		__hitbox.height = value;
 		
 		__height = value;
@@ -301,8 +310,8 @@ class UiControl extends Object
 		return __height;
 	}
 
-	private function get_hover():Bool
-	{
+	private function get_hover():Bool {
+
 		return __hover;
 	}
 
@@ -311,30 +320,30 @@ class UiControl extends Object
 		return __type;
 	}
 	
-	private function get_parent():UiControl
-	{
+	private function get_parent():UiContainer {
+
 		return __parent;
 	}
 	
-	private function get_visible():Bool
-	{
+	private function get_visible():Bool {
+
 		return __visible;
 	}
 	
-	private function set_visible(value:Bool):Bool
-	{	
+	private function set_visible(value:Bool):Bool {	
+
 		value ? onEvent.dispatch(this, VISIBLE) : onEvent.dispatch(this, INVISIBLE);
 
 		return __visible = value;
 	}
 	
-	private function get_width():Float
-	{
+	private function get_width():Float {
+
 		return __width;
 	}
 	
-	private function set_width(value:Float):Float
-	{
+	private function set_width(value:Float):Float {
+
 		__hitbox.width = value;
 		
 		__width = value;
@@ -344,33 +353,33 @@ class UiControl extends Object
 		return __width;
 	}
 	
-	private function get_x():Float
-	{
+	private function get_x():Float {
+
 		return __x;
 	}
 	
-	private function set_x(value:Float):Float
-	{
+	private function set_x(value:Float):Float {
+
 		return __x = value;
 	}
 	
-	private function get_y():Float
-	{
+	private function get_y():Float {
+
 		return __y;
 	}
 	
-	private function set_y(value:Float):Float
-	{
+	private function set_y(value:Float):Float {
+
 		return __y = value;
 	}
 	
-	private function get_z():Float
-	{
+	private function get_z():Float {
+
 		return __z;
 	}
 	
-	private function set_z(value:Float):Float
-	{
+	private function set_z(value:Float):Float {
+		
 		return __z = value;
 	}
 }

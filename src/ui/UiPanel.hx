@@ -22,35 +22,71 @@ class UiPanel extends UiLayout
 		super(width, height, x, y);
 		
 		__graphics = new Group<Tile>(9);
+
+		__graphics.addAt(0, new Tile(null, null));
+		
+		__graphics.addAt(1, new Tile(null, null));
+		
+		__graphics.addAt(2, new Tile(null, null));
+		
+		__graphics.addAt(3, new Tile(null, null));
+		
+		__graphics.addAt(4, new Tile(null, null));
+		
+		__graphics.addAt(5, new Tile(null, null));
+		
+		__graphics.addAt(6, new Tile(null, null));
+		
+		__graphics.addAt(7, new Tile(null, null));
+		
+		__graphics.addAt(8, new Tile(null, null));
 	}
 
 	override function __initGraphics():Void {
 
-		__graphics.addAt(0, new Tile(null, __form.getGraphic('panel_0')));
+		__graphics.members[0].id = __form.getGraphic('panel_0');
+
+		__graphics.members[1].id = __form.getGraphic('panel_1');
+
+		__graphics.members[2].id = __form.getGraphic('panel_2');
+
+		__graphics.members[3].id = __form.getGraphic('panel_3');
+
+		__graphics.members[4].id = __form.getGraphic('panel_4');
+
+		__graphics.members[5].id = __form.getGraphic('panel_5');
+
+		__graphics.members[6].id = __form.getGraphic('panel_6');
+
+		__graphics.members[7].id = __form.getGraphic('panel_7');
+
+		__graphics.members[8].id = __form.getGraphic('panel_8');
+
+		// __graphics.addAt(0, new Tile(null, __form.getGraphic('panel_0')));
 		
-		__graphics.addAt(1, new Tile(null, __form.getGraphic('panel_1')));
+		// __graphics.addAt(1, new Tile(null, __form.getGraphic('panel_1')));
 		
-		__graphics.addAt(2, new Tile(null, __form.getGraphic('panel_2')));
+		// __graphics.addAt(2, new Tile(null, __form.getGraphic('panel_2')));
 		
-		__graphics.addAt(3, new Tile(null, __form.getGraphic('panel_3')));
+		// __graphics.addAt(3, new Tile(null, __form.getGraphic('panel_3')));
 		
-		__graphics.addAt(4, new Tile(null, __form.getGraphic('panel_4')));
+		// __graphics.addAt(4, new Tile(null, __form.getGraphic('panel_4')));
 		
-		__graphics.addAt(5, new Tile(null, __form.getGraphic('panel_5')));
+		// __graphics.addAt(5, new Tile(null, __form.getGraphic('panel_5')));
 		
-		__graphics.addAt(6, new Tile(null, __form.getGraphic('panel_6')));
+		// __graphics.addAt(6, new Tile(null, __form.getGraphic('panel_6')));
 		
-		__graphics.addAt(7, new Tile(null, __form.getGraphic('panel_7')));
+		// __graphics.addAt(7, new Tile(null, __form.getGraphic('panel_7')));
 		
-		__graphics.addAt(8, new Tile(null, __form.getGraphic('panel_8')));
+		// __graphics.addAt(8, new Tile(null, __form.getGraphic('panel_8')));
 	}
 	
-	override public function init():Void 
-	{
+	override public function init():Void {
+
 		super.init();
 		
-		for (i in 0...__graphics.count) 
-		{
+		for (i in 0...__graphics.count) {
+
 			__graphics.members[i].parentTilemap = @:privateAccess __form.__tilemap;
 			
 			@:privateAccess __form.__tilemap.addTile(__graphics.members[i]);

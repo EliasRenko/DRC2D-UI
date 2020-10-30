@@ -27,8 +27,8 @@ class UiStripPanel extends UiPanel
 		super.release();
 	}
 
-	override public function addControl(control:UiControl):UiControl 
-	{
+	override public function addControl(control:UiControl):UiControl {
+		
 		var item:UiControl = super.addControl(new UiListItem(control, 4, __lastItem));
 		
 		control.x = 8;
