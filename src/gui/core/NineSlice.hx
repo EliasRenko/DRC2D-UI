@@ -1,0 +1,84 @@
+package gui.core;
+
+import drc.display.Tile;
+import haxe.ds.Vector;
+
+@:forward(get)
+abstract NineSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
+    
+    public function new() {
+        
+        this = new Vector<Tile>(9);
+
+        for (i in 0...9) {
+
+            this.set(i, new Tile(null, null));
+        }
+
+        this.get(1).offsetX = 30;
+		
+		this.get(3).offsetY = 30;
+		
+		this.get(4).offsetX = 30;
+		
+		this.get(4).offsetY = 30;
+		
+		this.get(5).offsetY = 30;
+		
+		this.get(7).offsetX = 30;
+    }
+
+    public function iterate(func:(Tile)->Void):Void {
+        
+        for (tile in this) {
+
+            func(tile);
+        }
+    }
+
+    public function setX(value:Float):Void {
+        
+        for (tile in this) {
+
+            tile.x = value;
+        }
+    }
+
+    public function setY(value:Float):Void {
+        
+        for (tile in this) {
+
+            tile.y = value;
+        }
+    }
+
+    public function setHeight(value:Float):Void {
+        
+        this.get(3).height = value - (30 * 2);
+		
+		this.get(4).height = value - (30 * 2);
+		
+		this.get(5).height = value - (30 * 2);
+		
+		this.get(6).offsetY = value - 30;
+		
+		this.get(7).offsetY = value - 30;
+		
+		this.get(8).offsetY = value - 30;
+    }
+
+    public function setWidth(value:Float):Void {
+        
+        this.get(1).width = value - (30 * 2);
+		
+		this.get(2).offsetX = value - 30;
+		
+		this.get(4).width = value - (30 * 2);
+		
+		this.get(5).offsetX = value - 30;
+		
+		this.get(7).width = value - (30 * 2);
+		
+		this.get(8).offsetX = value - 30;
+    }
+}
