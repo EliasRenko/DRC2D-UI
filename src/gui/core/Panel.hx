@@ -45,23 +45,23 @@ class Panel extends Container {
 
     private function __initGraphics():Void {
 
-        __nineSlice.get(0).id = 0;
+        __nineSlice.get(0).id = ____canvas.tilemap.tileset.names.get('panel_0');
 
-        __nineSlice.get(1).id = 0;
+        __nineSlice.get(1).id = ____canvas.tilemap.tileset.names.get('panel_1');
 
-        __nineSlice.get(2).id = 0;
+        __nineSlice.get(2).id = ____canvas.tilemap.tileset.names.get('panel_2');
 
-        __nineSlice.get(3).id = 0;
+        __nineSlice.get(3).id = ____canvas.tilemap.tileset.names.get('panel_3');
 
-        __nineSlice.get(4).id = 0;
+        __nineSlice.get(4).id = ____canvas.tilemap.tileset.names.get('panel_4');
 
-        __nineSlice.get(5).id = 0;
+        __nineSlice.get(5).id = ____canvas.tilemap.tileset.names.get('panel_5');
 
-        __nineSlice.get(6).id = 0;
+        __nineSlice.get(6).id = ____canvas.tilemap.tileset.names.get('panel_6');
 
-        __nineSlice.get(7).id = 0;
+        __nineSlice.get(7).id = ____canvas.tilemap.tileset.names.get('panel_7');
 
-        __nineSlice.get(8).id = 0;
+        __nineSlice.get(8).id = ____canvas.tilemap.tileset.names.get('panel_8');
     }
 
     override function __setGraphicX():Void {

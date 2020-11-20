@@ -34,6 +34,8 @@ class Container extends Control {
 
     override function release():Void {
 
+        clear();
+
         super.release();
     }
 
@@ -61,6 +63,14 @@ class Container extends Control {
 
 		__controls.remove(control);
     }
+
+    public function clear():Void {
+        
+        for (control in __controls) {
+
+            removeControl(control);
+        }
+	}
 
     override function update():Void {
 

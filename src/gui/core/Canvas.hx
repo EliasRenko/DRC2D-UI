@@ -1,11 +1,15 @@
 package gui.core;
 
 import drc.display.Text;
-import drc.display.Charmap2;
+import drc.display.Charmap;
 import drc.objects.State;
 import drc.display.Tile;
 import drc.display.Tilemap;
 import drc.utils.Common;
+
+import haxe.Json;
+import drc.display.Tileset;
+import drc.display.Region;
 
 class Canvas {
     
@@ -21,7 +25,7 @@ class Canvas {
 
     public var tilemap:Tilemap;
 
-    public var charmap:Charmap2;
+    public var charmap:Charmap;
 
     // ** Privates.
 
@@ -49,17 +53,17 @@ class Canvas {
 
         __markedControl = __container;
 
-        tilemap = new Tilemap(Common.resources.getProfile('res/profiles/default.json'), [Common.resources.getTexture('res/graphics/grid_bw.png')]);
+        tilemap = new Tilemap(Common.resources.getProfile('res/profiles/gui.json'), [Common.resources.getTexture('res/graphics/gui.png')], __loadTileset());
 
         __parentState.addGraphic(tilemap);
 
-        tilemap.tileset.addRegion([0, 0, 32, 32]);
+        //tilemap.tileset.addRegion([0, 0, 32, 32]);
 
-        tilemap.tileset.addRegion([8, 8, 32, 32]);
+        //tilemap.tileset.addRegion([8, 8, 32, 32]);
 
         // ** 
 
-        charmap = new Charmap2(Common.resources.getProfile('res/profiles/default.json'), Common.resources.getFont('res/fonts/font.json'));
+        charmap = new Charmap(Common.resources.getProfile('res/profiles/default.json'), Common.resources.getFont('res/fonts/font.json'));
 
         __parentState.addGraphic(charmap);
 
@@ -85,9 +89,78 @@ class Canvas {
 
         //addControl(panel);
 
-        var window:Window = new Window(128, 128, 128, 128);
+        var window:Window = new Window('New Window', 128, 256, 190, 128);
 
         addControl(window);
+
+        //var label:Label = new Label('New Window', 128, 128);
+
+        //addControl(label);
+
+        var list:List = new List(128, 128, 128);
+
+        addControl(list);
+
+        var _label_1 = list.addControl(new Label('Item1', 0, 0));
+        list.addControl(new Label('Item2', 0, 0));
+        var _label_3 = list.addControl(new Label('Item3', 0, 0));
+        list.addControl(new Label('Item4', 0, 0));
+        var _label_5 = list.addControl(new Label('Item5', 0, 0));
+
+        list.removeControl(_label_3);
+        list.removeControl(_label_5);
+    }
+
+    private function __loadTileset():Tileset {
+
+        //** Create a new tileset class.
+		
+		var tileset:Tileset = new Tileset();
+		
+		var regions:Array<Region>;
+		
+		//** Parse the requested profile source file.
+		
+		var data:Dynamic = Json.parse(Common.resources.getText("res/graphics/gui.json"));
+		
+		#if debug // ------
+		
+		//** Parse the name.
+		
+		var name:String = data.name;
+		
+		#end // ------
+		
+		if (Reflect.hasField(data, "regions")) {
+
+			var regionsData:Dynamic = Reflect.field(data, "regions");
+			
+			regions = new Array<Region>();
+			
+			for (i in 0...regionsData.length) {
+
+				var name:String = regionsData[i].name;
+
+				var region:Region = regionsData[i].dimensions;
+
+				regions[regionsData[i].id] = region;
+
+				tileset.addRegion(region, name);
+			}
+		}
+		
+		#if debug // ------
+		
+		else 
+		{
+			throw "Tileset: " + name + " has no regions attached.";
+		}
+		
+		#end // ------
+		
+		// ** Return.
+		
+		return tileset;
     }
 
     private function addControl(control:Control):Control {

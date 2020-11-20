@@ -15,7 +15,7 @@ abstract ThreeSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
             this.set(i, new Tile(null, null));
         }
 
-        this.get(1).offsetX = 30;
+        this.get(1).offsetX = 24;
     }
 
     public function iterate(func:(Tile)->Void):Void {
@@ -44,8 +44,8 @@ abstract ThreeSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
 
     public function setWidth(value:Float):Void {
         
-        this.get(1).width = value - 60;
+        this.get(1).width = value - 48;
 		
-		this.get(2).offsetX = value - 30;
+		this.get(2).offsetX = value - 24;
     }
 }

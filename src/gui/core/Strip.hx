@@ -10,7 +10,7 @@ class Strip extends Container {
 
     public function new(width:Float, x:Float, y:Float) {
         
-        super(width, 32, x, y);
+        super(width, 24, x, y);
     }
 
     override function init():Void {
@@ -43,11 +43,11 @@ class Strip extends Container {
 
     private function __initGraphics():Void {
 
-        __threeSlice.get(0).id = 0;
+        __threeSlice.get(0).id = ____canvas.tilemap.tileset.names.get('strip_0');
 
-        __threeSlice.get(1).id = 0;
+        __threeSlice.get(1).id = ____canvas.tilemap.tileset.names.get('strip_1');
 
-        __threeSlice.get(2).id = 0;
+        __threeSlice.get(2).id = ____canvas.tilemap.tileset.names.get('strip_2');
     }
 
     override function __setGraphicX():Void {
