@@ -11,7 +11,9 @@ class List extends Container {
 
     override function addControl(control:Control):Control {
 
-        var _listItem:ListItem = new ListItem(control);
+        var _listItem:ListItem = new ListItem(control, width);
+
+        height += _listItem.height;
 
         var _lastControl:Control = __controls.last();
 
@@ -29,6 +31,20 @@ class List extends Container {
 
     override function removeControl(control:Control) {
 
+        height -= control.height;
+
         super.removeControl(control);
+    }
+
+    override function onMouseEnter() {
+
+        trace('Enter');
+
+        super.onMouseEnter();
+    }
+
+    override function update():Void {
+
+        super.update();
     }
 }

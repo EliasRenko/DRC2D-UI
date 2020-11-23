@@ -14,9 +14,11 @@ class ListItem extends Container {
 
     /** @private **/ private var ____front:ListItem;
 
-    public function new(control:Control) {
+    public function new(control:Control, width:Float) {
 
-        super(control.width, control.height, 0, 0);
+        super(width, control.height, 0, 0);
+
+        __graphic = new Tile(null, null);
 
         addControl(control);
     }
@@ -27,6 +29,18 @@ class ListItem extends Container {
 
             y = ____front.y + ____front.height;
         }
+
+        __graphic.id = ____canvas.tilemap.tileset.names.get('empty');
+
+        __graphic.parentTilemap = ____canvas.tilemap;
+
+        __graphic.visible = false;
+
+        @:privateAccess ____canvas.tilemap.addTile(__graphic);
+
+        __graphic.width = __width;
+
+        __graphic.height = __height;
 
         super.init();
     }
@@ -48,6 +62,22 @@ class ListItem extends Container {
         super.release();
     }
 
+    override function update() {
+
+        var control:Control = __controls.first();
+
+        if (control.hitTest()) control.update();
+
+        if (__hover) {
+
+            onMouseHover();
+        }
+        else {
+
+            onMouseEnter();
+        }
+    }
+
     public function setPosition():Void {
         
         var _y:Float = 0;
@@ -62,5 +92,29 @@ class ListItem extends Container {
         if (____back == null) return;
             
         ____back.setPosition();
+    }
+
+    override function onMouseEnter() {
+
+        __graphic.visible = true;
+
+        super.onMouseEnter();
+    }
+
+    override function onMouseLeave() {
+
+        __graphic.visible = false;
+
+        super.onMouseLeave();
+    }
+
+    override function __setGraphicX():Void {
+
+        __graphic.x = ____offsetX + __x;
+    }
+
+    override function __setGraphicY():Void {
+
+        __graphic.y = ____offsetY + __y;
     }
 }
