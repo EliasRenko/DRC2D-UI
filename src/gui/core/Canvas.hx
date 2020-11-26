@@ -108,7 +108,11 @@ class Canvas {
         var _label_5 = list.addControl(new Label('Item5', 0, 0));
 
         list.removeControl(_label_3);
-        list.removeControl(_label_5);
+        //list.removeControl(_label_5);
+
+        var slider:Slider = new Slider(230, 256, 68);
+
+        addControl(slider);
     }
 
     private function __loadTileset():Tileset {

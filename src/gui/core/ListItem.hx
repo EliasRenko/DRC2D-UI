@@ -8,15 +8,9 @@ class ListItem extends Container {
 
     /** @private **/ private var __graphic:Tile;
 
-    // ** Privates with access.
+    public function new(control:Control, width:Float, y:Float) {
 
-    /** @private **/ private var ____back:ListItem;
-
-    /** @private **/ private var ____front:ListItem;
-
-    public function new(control:Control, width:Float) {
-
-        super(width, control.height, 0, 0);
+        super(width, control.height, 0, y);
 
         __graphic = new Tile(null, null);
 
@@ -24,11 +18,6 @@ class ListItem extends Container {
     }
 
     override function init():Void {
-
-        if (____front != null) {
-
-            y = ____front.y + ____front.height;
-        }
 
         __graphic.id = ____canvas.tilemap.tileset.names.get('empty');
 
@@ -47,22 +36,10 @@ class ListItem extends Container {
 
     override function release():Void {
 
-        if (____front != null) {
-
-            ____front.____back = ____back;
-        }
-
-        if (____back != null) {
-
-            ____back.____front = ____front;
-
-            ____back.setPosition();
-        }
-
         super.release();
     }
 
-    override function update() {
+    override function update():Void {
 
         var control:Control = __controls.first();
 
@@ -78,30 +55,14 @@ class ListItem extends Container {
         }
     }
 
-    public function setPosition():Void {
-        
-        var _y:Float = 0;
-
-        if (____front != null) {
-
-            _y = ____front.y + ____front.height;
-        }
-
-        y = _y;
-
-        if (____back == null) return;
-            
-        ____back.setPosition();
-    }
-
-    override function onMouseEnter() {
+    override function onMouseEnter():Void {
 
         __graphic.visible = true;
 
         super.onMouseEnter();
     }
 
-    override function onMouseLeave() {
+    override function onMouseLeave():Void {
 
         __graphic.visible = false;
 

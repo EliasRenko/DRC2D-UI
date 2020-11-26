@@ -1,5 +1,6 @@
 package gui.core;
 
+import drc.ds.IListObject;
 import drc.core.EventDispacher;
 import drc.math.Rectangle;
 import gui.events.ControlEvent;
@@ -102,6 +103,11 @@ class Control extends EventDispacher<ControlEvent> {
         else {
 
             onMouseEnter();
+        }
+
+        if (____canvas.leftClick) {
+             
+            onMouseLeftClick();
         }
     }
 

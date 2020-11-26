@@ -11,34 +11,30 @@ class List extends Container {
 
     override function addControl(control:Control):Control {
 
-        var _listItem:ListItem = new ListItem(control, width);
+        var _listItem:ListItem = new ListItem(control, width, height);
 
         height += _listItem.height;
-
-        var _lastControl:Control = __controls.last();
-
-        if (_lastControl != null) {
-
-            var l:ListItem = cast(_lastControl, ListItem);
-
-            @:privateAccess l.____back = _listItem;
-
-            @:privateAccess _listItem.____front = l;
-        }
 
         return super.addControl(_listItem);
     }
 
     override function removeControl(control:Control) {
 
+        super.removeControl(control);
+
         height -= control.height;
 
-        super.removeControl(control);
+        var _y:Float = 0;
+
+        for (control in __controls) {
+
+            control.y = _y;
+
+            _y += control.height;
+        }
     }
 
     override function onMouseEnter() {
-
-        trace('Enter');
 
         super.onMouseEnter();
     }

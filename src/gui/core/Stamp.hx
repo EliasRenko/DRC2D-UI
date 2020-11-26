@@ -28,6 +28,8 @@ class Stamp extends Control {
 
         __graphic.parentTilemap = ____canvas.tilemap;
 
+        __graphic.visible = visible;
+
         @:privateAccess ____canvas.tilemap.addTile(__graphic);
 
         __width = __graphic.width;
@@ -45,11 +47,6 @@ class Stamp extends Control {
     override function update():Void {
 
         super.update();
-
-        if (____canvas.leftClick) {
-             
-            onMouseLeftClick();
-        }
     }
 
     override function onMouseEnter():Void {
