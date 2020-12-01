@@ -1,16 +1,21 @@
 package gui.core;
 
-import gui.core.ThreeSlice;
+import drc.display.Text;
+import gui.core.Control;
 
-class Strip extends Container {
+class Button extends Control {
 
-    // ** Privates.
+    /** @private **/ private var __bitmapText:Text;
 
     /** @private **/ private var __threeSlice:ThreeSlice = new ThreeSlice();
-
-    public function new(width:Float, x:Float, y:Float) {
+    
+    public function new(text:String, width:Float, x:Float, y:Float) {
         
-        super(width, 24, x, y);
+        super(x, y);
+
+        __bitmapText = new Text(null, text, 0, 0);
+
+        __width = width;
     }
 
     override function init():Void {
@@ -28,6 +33,10 @@ class Strip extends Container {
 
         __threeSlice.setWidth(__width);
 
+        __bitmapText.parent = ____canvas.charmap;
+
+        __bitmapText.addToParent();
+
         super.init();
     }
 
@@ -38,46 +47,39 @@ class Strip extends Container {
             ____canvas.tilemap.removeTile(tile);
         });
 
+        __bitmapText.dispose();
+
         super.release();
-    }
-
-    public function addControl(control:Control):Control {
-        
-        return __addControl(control);
-    }
-
-    public function removeControl(control:Control):Void {
-        
-        return __removeControl(control);
-    }
-
-    public function clear():Void {
-
-        __clear();
     }
 
     private function __initGraphics():Void {
 
-        __threeSlice.get(0).id = ____canvas.tilemap.tileset.names.get('strip_0');
+        __threeSlice.get(0).id = ____canvas.tilemap.tileset.names.get('slider_0');
 
-        __threeSlice.get(1).id = ____canvas.tilemap.tileset.names.get('strip_1');
+        __threeSlice.get(1).id = ____canvas.tilemap.tileset.names.get('slider_1');
 
-        __threeSlice.get(2).id = ____canvas.tilemap.tileset.names.get('strip_2');
+        __threeSlice.get(2).id = ____canvas.tilemap.tileset.names.get('slider_2');
     }
 
     override function __setGraphicX():Void {
+
+        __bitmapText.x = __x + (__width / 2) - (__bitmapText.width / 2);
 
         __threeSlice.setX(__x + ____offsetX);
     }
 
     override function __setGraphicY():Void {
-        
+
+        __bitmapText.y = ____offsetY + __y;
+
         __threeSlice.setY(__y + ____offsetY);
     }
 
     // ** Getters and setters.
 
     override function set_width(value:Float):Float {
+
+        __bitmapText.x = __x + (value / 2) - (__bitmapText.width / 2);
 
         __threeSlice.setWidth(value);
 

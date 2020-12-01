@@ -26,6 +26,21 @@ abstract ThreeSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
         }
     }
 
+    public function setVisible(value:Bool):Void {
+        
+        for (tile in this) {
+
+            tile.visible = value;
+        }
+    }
+
+    public function setWidth(value:Float):Void {
+        
+        this.get(1).width = value - 48;
+		
+		this.get(2).offsetX = value - 24;
+    }
+
     public function setX(value:Float):Void {
         
         for (tile in this) {
@@ -40,12 +55,5 @@ abstract ThreeSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
 
             tile.y = value;
         }
-    }
-
-    public function setWidth(value:Float):Void {
-        
-        this.get(1).width = value - 48;
-		
-		this.get(2).offsetX = value - 24;
     }
 }

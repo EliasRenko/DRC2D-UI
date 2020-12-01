@@ -17,6 +17,8 @@ class Canvas {
 
     public var markedControl(get, set):Control;
 
+    public var selectedControl(get, set):Control;
+
     public var mouseX(get, null):Int;
 	
     public var mouseY(get, null):Int;
@@ -35,7 +37,11 @@ class Canvas {
 
     /** @private **/ private var __markedControl:Control;
 
+    /** @private **/ private var __selectedControl:Control;
+
     // ** Debug.
+
+    public var parser:CanvasParser;
 
     #if debug
 
@@ -53,19 +59,25 @@ class Canvas {
 
         __markedControl = __container;
 
+        __selectedControl = __container;
+
         tilemap = new Tilemap(Common.resources.getProfile('res/profiles/gui.json'), [Common.resources.getTexture('res/graphics/gui.png')], __loadTileset());
 
         __parentState.addGraphic(tilemap);
 
-        //tilemap.tileset.addRegion([0, 0, 32, 32]);
-
-        //tilemap.tileset.addRegion([8, 8, 32, 32]);
-
-        // ** 
-
         charmap = new Charmap(Common.resources.getProfile('res/profiles/default.json'), Common.resources.getFont('res/fonts/font.json'));
 
         __parentState.addGraphic(charmap);
+
+        parser = new CanvasParser(this);
+
+        //parser.parseUI(Common.resources.getText("res/ui/canvas1.json"));
+
+        var _combobox:Combobox = new Combobox(128, 32, 32);
+
+        addControl(_combobox);
+
+        return;
 
         // ** 
 
@@ -113,6 +125,10 @@ class Canvas {
         var slider:Slider = new Slider(230, 256, 68);
 
         addControl(slider);
+
+        var button:Button = new Button("Confirm", 128, 128, 32);
+
+        addControl(button);
     }
 
     private function __loadTileset():Tileset {
@@ -167,12 +183,12 @@ class Canvas {
 		return tileset;
     }
 
-    private function addControl(control:Control):Control {
+    public function addControl(control:Control):Control {
         
         return __container.addControl(control);
     }
 
-    private function removeControl(control:Control):Void {
+    public function removeControl(control:Control):Void {
         
         return __container.removeControl(control);
     }
@@ -194,6 +210,20 @@ class Canvas {
         __markedControl.onMouseLeave();
 
         __markedControl = control;
+
+        return control;
+    }
+
+    private function get_selectedControl():Control {
+
+        return __selectedControl;
+    }
+
+    private function set_selectedControl(control:Control):Control {
+
+        __selectedControl.onFocusLost();
+
+        __selectedControl = control;
 
         return control;
     }
@@ -228,5 +258,88 @@ private class RootContainer extends Container {
     public function new(width:Float, height:Float) {
 
         super(width, height, 0, 0);
+    }
+
+    public function addControl(control:Control):Control {
+        
+        return __addControl(control);
+    }
+
+    public function removeControl(control:Control):Void {
+        
+        return __removeControl(control);
+    }
+}
+
+private class CanvasParser {
+
+    private var __canvas:Canvas;
+
+    public function new(canvas:Canvas) {
+        
+        __canvas = canvas;
+    }
+
+    public function parseUI(source:String):Void {
+
+        var _rootData:Dynamic = Json.parse(source);
+
+        if (Reflect.hasField(_rootData, "controls")) {	
+
+            var _controlData:Dynamic = Reflect.field(_rootData, "controls");
+
+            for (i in 0..._controlData.length) {
+
+                var _data:Dynamic = _controlData[i];
+
+                switch (_data.control) {
+
+                    case 'label':
+
+                        addLabel(_data.text, _data.x, _data.y);
+
+                    case 'button':
+
+                        addButton(_data.text, _data.width, _data.x, _data.y);
+
+                    case 'window':
+
+                        addWindow(_data.text, _data.width, _data.height, _data.x, _data.y);
+
+                    default:
+                }
+            }
+        }
+    }
+
+    private function checkContainer(container:Container, controlData:Dynamic):Void {
+        
+    }
+
+    private function addLabel(text:String, x:Float, y:Float):Label {
+        
+        var _label:Label = new Label(text, x, y);
+
+        __canvas.addControl(_label);
+
+        return _label;
+    }
+
+    private function addButton(text:String, width:Float, x:Float, y:Float):Button {
+        
+        var _button:Button = new Button(text, width, x, y);
+
+        __canvas.addControl(_button);
+
+        return _button;
+    }
+
+    private function addWindow(text:String, width:Float, height:Float, x:Float, y:Float):Window {
+        
+        var _window:Window = new Window(text, width, height, x, y);
+
+        __canvas.addControl(_window);
+
+        return _window;
     }
 }

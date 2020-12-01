@@ -21,19 +21,24 @@ class Window extends Container {
 
         super.init();
 
-        super.addControl(__strip);
+        __addControl(__strip);
 
-        super.addControl(__panel);
+        __addControl(__panel);
     }
 
-    override function addControl(control:Control):Control {
+    public function addControl(control:Control):Control {
 
         return __panel.addControl(control);
     }
 
-    override function removeControl(control:Control):Void {
+    public function removeControl(control:Control):Void {
         
         __panel.removeControl(control);
+    }
+    
+    public function clear():Void {
+        
+        __panel.clear();
     }
 }
 

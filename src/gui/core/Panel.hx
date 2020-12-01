@@ -43,6 +43,21 @@ class Panel extends Container {
         super.release();
     }
 
+    public function addControl(control:Control):Control {
+        
+        return __addControl(control);
+    }
+
+    public function removeControl(control:Control):Void {
+        
+        return __removeControl(control);
+    }
+
+    public function clear():Void {
+
+        __clear();
+    }
+
     private function __initGraphics():Void {
 
         __nineSlice.get(0).id = ____canvas.tilemap.tileset.names.get('panel_0');
@@ -81,6 +96,13 @@ class Panel extends Container {
         __nineSlice.setHeight(value);
 
         return super.set_height(value);
+    }
+
+    override function set_visible(value:Bool):Bool {
+
+        __nineSlice.setVisible(value);
+
+        return super.set_visible(value);
     }
 
     override function set_width(value:Float):Float {

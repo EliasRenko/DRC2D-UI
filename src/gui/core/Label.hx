@@ -80,6 +80,13 @@ class Label extends Control {
         return text;
     }
 
+    override function set_visible(value:Bool):Bool {
+
+        __bitmapText.visible = value;
+
+        return super.set_visible(value);
+    }
+
     override function get_width():Float {
 
         return super.get_width();

@@ -55,7 +55,7 @@ class Slider extends Control {
 
         __graphic.visible = visible;
 
-        @:privateAccess ____canvas.tilemap.addTile(__graphic);
+        ____canvas.tilemap.addTile(__graphic);
 
         __bitmapText.parent = ____canvas.charmap;
 
@@ -135,6 +135,8 @@ class Slider extends Control {
     override function set_width(value:Float):Float {
 
         __threeSlice.setWidth(value);
+
+        __bitmapText.x = (value / 2) - (__bitmapText.width / 2);
 
         return super.set_width(value);
     }

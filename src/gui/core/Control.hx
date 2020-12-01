@@ -16,7 +16,7 @@ class Control extends EventDispacher<ControlEvent> {
 
     public var height(get, set):Float;
 
-    public var parent(get, set):Container;
+    public var parent(get, null):Container;
 
     public var visible(get, set):Bool;
 
@@ -31,6 +31,8 @@ class Control extends EventDispacher<ControlEvent> {
     // ** Privates.
 
     /** @private **/ private var __active:Bool = false;
+
+    /** @private **/ private var __focused:Bool = false;
 
     /** @private **/ private var __height:Float;
 
@@ -108,11 +110,16 @@ class Control extends EventDispacher<ControlEvent> {
         if (____canvas.leftClick) {
              
             onMouseLeftClick();
+
+            if (!__focused) {
+
+                onFocusGain();
+            }
         }
     }
 
     public function onMouseLeftClick():Void {
-        
+
         dispatchEvent({timestamp: 0, control: this}, LEFT_CLICK);
     }
 
@@ -154,6 +161,18 @@ class Control extends EventDispacher<ControlEvent> {
     public function onVisibilityChange():Void {
         
         dispatchEvent({timestamp: 0, control: this}, ON_VISIBILITY_CHANGE);
+    }
+
+    public function onFocusGain():Void {
+        
+        __focused = true;
+
+        ____canvas.selectedControl = this;
+    }
+
+    public function onFocusLost():Void {
+        
+        __focused = false;
     }
 
     // ** Privates.
@@ -217,20 +236,6 @@ class Control extends EventDispacher<ControlEvent> {
 
 		return ____parent;
 	}
-	
-	private function set_parent(parent:Container):Container {
-        
-        if (this.parent != null) {
-
-            this.parent.removeControl(this);
-        }
-
-        parent.addControl(this);
-
-        onParentChange();
-
-		return parent;
-    }
 
     private function get_visible():Bool {
 

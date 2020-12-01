@@ -9,18 +9,18 @@ class List extends Container {
         super(width, 0, x, y);
     }
 
-    override function addControl(control:Control):Control {
+    public function addControl(control:Control):Control {
 
         var _listItem:ListItem = new ListItem(control, width, height);
 
         height += _listItem.height;
 
-        return super.addControl(_listItem);
+        return __addControl(_listItem);
     }
 
-    override function removeControl(control:Control) {
+    public function removeControl(control:Control):Void {
 
-        super.removeControl(control);
+        __removeControl(control);
 
         height -= control.height;
 
@@ -34,7 +34,7 @@ class List extends Container {
         }
     }
 
-    override function onMouseEnter() {
+    override function onMouseEnter():Void {
 
         super.onMouseEnter();
     }
@@ -42,5 +42,17 @@ class List extends Container {
     override function update():Void {
 
         super.update();
+    }
+
+    // ** Getters and setters.
+
+    override function set_visible(value:Bool):Bool {
+
+        for (control in __controls) {
+
+            control.visible = value;
+        }
+
+        return super.set_visible(value);
     }
 }

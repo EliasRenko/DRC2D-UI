@@ -34,12 +34,12 @@ class Container extends Control {
 
     override function release():Void {
 
-        clear();
+        __clear();
 
         super.release();
     }
 
-    public function addControl(control:Control):Control {
+    private function __addControl(control:Control):Control {
         
         if (control.active) return control;
 
@@ -55,7 +55,7 @@ class Container extends Control {
         return control;
     }
 
-    public function removeControl(control:Control):Void {
+    private function __removeControl(control:Control):Void {
 
         control.dispatchEvent({timestamp: 0, control: control}, REMOVED);
 
@@ -64,11 +64,11 @@ class Container extends Control {
 		__controls.remove(control);
     }
 
-    public function clear():Void {
+    private function __clear():Void {
         
         for (control in __controls) {
 
-            removeControl(control);
+            __removeControl(control);
         }
 	}
 
@@ -112,6 +112,8 @@ class Container extends Control {
         
         @:privateAccess control.____parent = this;
 
+        control.visible = control.visible ? __visible : false;
+
         control.init();
 
         control.dispatchEvent({timestamp: 0, control: this}, INIT);
@@ -122,6 +124,16 @@ class Container extends Control {
     private function get_controls():List<Control> {
 
 		return __controls;
+    }
+
+    override function set_visible(value:Bool):Bool {
+
+        for (control in __controls) {
+
+            control.visible = value;
+        }
+
+        return super.set_visible(value);
     }
     
     override function set_x(value:Float):Float {

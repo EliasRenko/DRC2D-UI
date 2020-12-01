@@ -14,7 +14,7 @@ class ListItem extends Container {
 
         __graphic = new Tile(null, null);
 
-        addControl(control);
+        __addControl(control);
     }
 
     override function init():Void {
@@ -25,7 +25,7 @@ class ListItem extends Container {
 
         __graphic.visible = false;
 
-        @:privateAccess ____canvas.tilemap.addTile(__graphic);
+        ____canvas.tilemap.addTile(__graphic);
 
         __graphic.width = __width;
 
@@ -77,5 +77,14 @@ class ListItem extends Container {
     override function __setGraphicY():Void {
 
         __graphic.y = ____offsetY + __y;
+    }
+
+    // ** Getters and setters.
+
+    override function set_visible(value:Bool):Bool {
+
+        __controls.first().visible = value;
+
+        return super.set_visible(value);
     }
 }

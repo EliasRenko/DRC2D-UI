@@ -30,7 +30,7 @@ class Stamp extends Control {
 
         __graphic.visible = visible;
 
-        @:privateAccess ____canvas.tilemap.addTile(__graphic);
+        ____canvas.tilemap.addTile(__graphic);
 
         __width = __graphic.width;
 

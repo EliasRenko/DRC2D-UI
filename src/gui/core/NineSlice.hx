@@ -36,22 +36,6 @@ abstract NineSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
         }
     }
 
-    public function setX(value:Float):Void {
-        
-        for (tile in this) {
-
-            tile.x = value;
-        }
-    }
-
-    public function setY(value:Float):Void {
-        
-        for (tile in this) {
-
-            tile.y = value;
-        }
-    }
-
     public function setHeight(value:Float):Void {
         
         this.get(3).height = value - (24 * 2);
@@ -67,6 +51,14 @@ abstract NineSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
         this.get(8).offsetY = value - 24;
     }
 
+    public function setVisible(value:Bool):Void {
+        
+        for (tile in this) {
+
+            tile.visible = value;
+        }
+    }
+
     public function setWidth(value:Float):Void {
         
         this.get(1).width = value - (24 * 2);
@@ -80,5 +72,21 @@ abstract NineSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
 		this.get(7).width = value - (24 * 2);
 		
 		this.get(8).offsetX = value - 24;
+    }
+
+    public function setX(value:Float):Void {
+        
+        for (tile in this) {
+
+            tile.x = value;
+        }
+    }
+
+    public function setY(value:Float):Void {
+        
+        for (tile in this) {
+
+            tile.y = value;
+        }
     }
 }
