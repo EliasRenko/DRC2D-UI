@@ -31,7 +31,7 @@ class Slider extends Control {
 
         __height = 24;
 
-        __type = "slider";
+        __type = 'slider';
     }
 
     override function init():Void {

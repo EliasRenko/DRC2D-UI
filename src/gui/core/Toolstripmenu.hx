@@ -17,7 +17,7 @@ class Toolstripmenu extends Container<Control> {
 
         __strip = new ToolstripBar();
 
-        __type = "toolstrip";
+        __type = 'toolstrip';
     }
 
     override function init():Void {

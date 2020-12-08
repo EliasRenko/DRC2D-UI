@@ -304,12 +304,12 @@ class UiForm extends Entity
 		onEvent.dispatch(textEvent.data, 1);
 	}
 
-	public function onTextBegin() {
+	public function onTextBegin():Void {
 		
 		Common.input.beginTextInput();
 	}
 
-	public function onTextEnd() {
+	public function onTextEnd():Void {
 
 		Common.input.endTextInput();
 	}

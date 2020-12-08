@@ -14,13 +14,13 @@ class Combobox extends Container<Control> {
         
         super(width, 128, x, y);
 
-        __button = new Button("text", width, 0, 0);
+        __button = new Button('text', width, 0, 0);
 
         __panel = new ComboboxPanel(width, 0, 24);
 
         __panel.list.addEventListener(__onItemClick, ON_ITEM_CLICK);
 
-        __type = "combobox";
+        __type = 'combobox';
     }
 
     override function init():Void {

@@ -81,4 +81,11 @@ class Stamp extends Control {
 
         return value;
     }
+
+    override function set_visible(value:Bool):Bool {
+
+        __graphic.visible = value;
+
+        return super.set_visible(value);
+    }
 }

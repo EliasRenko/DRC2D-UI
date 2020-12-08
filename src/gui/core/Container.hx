@@ -22,7 +22,7 @@ class Container<T:Control> extends Control {
 
         __height = height;
 
-        __type = "container";
+        __type = 'container';
     }
 
     override function init():Void {

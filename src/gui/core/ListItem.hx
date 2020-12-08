@@ -20,7 +20,7 @@ class ListItem<T:Control> extends Container<T> {
 
         __graphic = new Tile(null, null);
 
-        __type = "listitem";
+        __type = 'listitem';
     }
 
     override function init():Void {

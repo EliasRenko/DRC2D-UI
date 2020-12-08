@@ -15,6 +15,8 @@ class Canvas {
     
     // ** Publics.
 
+    public var dialog(get, set):Dialog;
+
     public var markedControl(get, set):Control;
 
     public var focusedControl(get, set):Control;
@@ -34,6 +36,8 @@ class Canvas {
     // ** Privates.
 
     /** @private **/ private var __container:RootContainer;
+
+    /** @private **/ private var __dialog:Dialog;
 
     /** @private **/ private var __parentState:State;
 
@@ -79,6 +83,8 @@ class Canvas {
 
             addControl(__toolstripmenu);
         }
+
+        dialog = new Dialog('Intro', 256, 256);
 
         parser = new CanvasParser(this);
 
@@ -206,10 +212,43 @@ class Canvas {
 
     public function update():Void {
         
+        if (__dialog.visible) {
+
+            __dialog.update();
+
+            return;
+        }
+
         __container.update();
     }
 
+    public function startTextInput(textfield:Textfield):Void {
+
+    }
+
+    public function stopTextInput(textfield:Textfield):Void {
+
+    }
+
     // ** Getters and setters.
+
+    private function get_dialog():Dialog {
+        
+        return __dialog;
+    }
+
+    private function set_dialog(dialog:Dialog):Dialog {
+        
+        addControl(dialog);
+
+        __dialog = dialog;
+
+        __dialog.x = Math.round(__container.width / 2) - (__dialog.width / 2);
+
+        __dialog.y = Math.round(__container.height / 2) - (__dialog.height / 2);
+
+        return __dialog;
+    }
 
     private function get_markedControl():Control {
 

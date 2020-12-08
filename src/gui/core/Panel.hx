@@ -12,7 +12,7 @@ class Panel extends Container<Control> {
 
         super(width, heigth, x, y);
 
-        type = "panel";
+        type = 'panel';
     }
 
     override function init():Void {

@@ -12,7 +12,7 @@ class Strip extends Container<Control> {
         
         super(width, 24, x, y);
 
-        type = "strip";
+        type = 'strip';
     }
 
     override function init():Void {
@@ -84,5 +84,12 @@ class Strip extends Container<Control> {
         __threeSlice.setWidth(value);
 
         return super.set_width(value);
+    }
+
+    override function set_visible(value:Bool):Bool {
+
+        __threeSlice.setVisible(value);
+
+        return super.set_visible(value);
     }
 }

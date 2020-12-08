@@ -41,5 +41,7 @@ package gui.events;
     var ON_ITEM_CLICK = 18;
 
     var ON_FOLD_CLICK = 19;
+
+    var ON_TEXT_INPUT = 20;
 }
 	

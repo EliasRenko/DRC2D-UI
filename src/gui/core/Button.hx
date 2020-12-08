@@ -23,7 +23,7 @@ class Button extends Control {
 
         __width = width;
 
-        type = "button";
+        type = 'button';
     }
 
     override function init():Void {
@@ -71,14 +71,14 @@ class Button extends Control {
 
     override function __setGraphicX():Void {
 
-        __bitmapText.x = Math.round(__x + (__width / 2) - (__bitmapText.width / 2));
+        __bitmapText.x = Math.round(__x + ____offsetX + (__width / 2) - (__bitmapText.width / 2));
 
         __threeSlice.setX(__x + ____offsetX);
     }
 
     override function __setGraphicY():Void {
 
-        __bitmapText.y = ____offsetY + __y + 2;
+        __bitmapText.y = __y + ____offsetY + 2;
 
         __threeSlice.setY(__y + ____offsetY);
     }

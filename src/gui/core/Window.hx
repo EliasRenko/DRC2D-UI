@@ -16,11 +16,13 @@ class Window extends Container<Control> {
 
         __strip = new WindowStrip(text, width);
 
+        __strip.stamp_close.addEventListener(__onCloseClickEvent, LEFT_CLICK);
+
         __strip.stamp_fold.addEventListener(__onFoldClickEvent, LEFT_CLICK);
 
         __panel = new WindowPanel(width, height - 24, 0, 24);
 
-        __type = "window";
+        __type = 'window';
     }
 
     override function init():Void {
@@ -49,6 +51,7 @@ class Window extends Container<Control> {
 
     private function __onCloseClickEvent(control:Control, type:UInt):Void {
 
+        visible = visible ? false : true;
     }
 
     private function __onFoldClickEvent(control:Control, type:UInt):Void {

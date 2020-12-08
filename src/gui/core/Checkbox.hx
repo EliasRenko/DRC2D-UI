@@ -23,7 +23,7 @@ class Checkbox extends Control {
 
         __value = value;
 
-        __type = "checkbox";
+        __type = 'checkbox';
     }
 
     override function init():Void {

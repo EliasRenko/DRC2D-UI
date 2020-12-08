@@ -16,7 +16,7 @@ class Label extends Control {
 
         __bitmapText = new Text(null, text, x, y);
 
-        __type = "label";
+        __type = 'label';
     }
 
     override function init():Void {
