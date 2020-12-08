@@ -2,7 +2,7 @@ package gui.core;
 
 import gui.core.ThreeSlice;
 
-class Strip extends Container {
+class Strip extends Container<Control> {
 
     // ** Privates.
 
@@ -11,6 +11,8 @@ class Strip extends Container {
     public function new(width:Float, x:Float, y:Float) {
         
         super(width, 24, x, y);
+
+        type = "strip";
     }
 
     override function init():Void {

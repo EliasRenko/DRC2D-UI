@@ -2,7 +2,7 @@ package gui.core;
 
 import gui.core.NineSlice;
 
-class Panel extends Container {
+class Panel extends Container<Control> {
 
     // ** Privates.
 
@@ -11,6 +11,8 @@ class Panel extends Container {
     public function new(width:Float, heigth:Float, x:Float, y:Float) {
 
         super(width, heigth, x, y);
+
+        type = "panel";
     }
 
     override function init():Void {

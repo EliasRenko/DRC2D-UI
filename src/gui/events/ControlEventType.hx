@@ -37,5 +37,9 @@ package gui.events;
     var ON_VISIBILITY_CHANGE = 16;
 
     var ON_TAB_INDEX_CHANGE = 17;
+
+    var ON_ITEM_CLICK = 18;
+
+    var ON_FOLD_CLICK = 19;
 }
 	

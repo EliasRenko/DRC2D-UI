@@ -1,12 +1,11 @@
 package gui.core;
 
-import drc.ds.IListObject;
 import drc.core.EventDispacher;
 import drc.math.Rectangle;
 import gui.events.ControlEvent;
 import gui.events.ControlEventType;
 
-class Control extends EventDispacher<ControlEvent> {
+class Control extends EventDispacher<Control> {
 
     // ** Publics.
 
@@ -16,7 +15,9 @@ class Control extends EventDispacher<ControlEvent> {
 
     public var height(get, set):Float;
 
-    public var parent(get, null):Container;
+    public var parent(get, null):Control;
+
+    public var type(get, null):String;
 
     public var visible(get, set):Bool;
 
@@ -40,6 +41,8 @@ class Control extends EventDispacher<ControlEvent> {
 
     /** @private **/ private var __hover:Bool = false;
 
+    /** @private **/ private var __type:String = "";
+
     /** @private **/ private var __visible:Bool = true;
 
     /** @private **/ private var __width:Float;
@@ -58,7 +61,7 @@ class Control extends EventDispacher<ControlEvent> {
 	
     /** @private **/ @:noCompletion private var ____offsetY:Float = 0;
     
-    /** @private **/ @:noCompletion private var ____parent:Container;
+    /** @private **/ @:noCompletion private var ____parent:Control;
 
     public function new(x:Float, y:Float) {
 
@@ -76,9 +79,14 @@ class Control extends EventDispacher<ControlEvent> {
         __setGraphicX();
 
         __setGraphicY();
+
+        dispatchEvent(this, INIT);
     }
 
-    public function release():Void {}
+    public function release():Void {
+
+        clearEventListeners();
+    }
 
     public function hitTest():Bool {
         
@@ -120,12 +128,12 @@ class Control extends EventDispacher<ControlEvent> {
 
     public function onMouseLeftClick():Void {
 
-        dispatchEvent({timestamp: 0, control: this}, LEFT_CLICK);
+        dispatchEvent(this, LEFT_CLICK);
     }
 
     public function onMouseHover():Void {
         
-        dispatchEvent({timestamp: 0, control: this}, ON_HOVER);
+        dispatchEvent(this, ON_HOVER);
     }
 
     public function onMouseEnter():Void {
@@ -134,19 +142,19 @@ class Control extends EventDispacher<ControlEvent> {
 
         ____canvas.markedControl = this;
 
-        dispatchEvent({timestamp: 0, control: this}, ON_MOUSE_ENTER);
+        dispatchEvent(this, ON_MOUSE_ENTER);
     }
 
     public function onMouseLeave():Void {
         
         __hover = false;
 
-        dispatchEvent({timestamp: 0, control: this}, ON_MOUSE_LEAVE);
+        dispatchEvent(this, ON_MOUSE_LEAVE);
     }
 
     public function onSizeChange():Void {
         
-        dispatchEvent({timestamp: 0, control: this}, ON_SIZE_CHANGE);
+        dispatchEvent(this, ON_SIZE_CHANGE);
     }
 
     public function onParentChange():Void {
@@ -155,19 +163,21 @@ class Control extends EventDispacher<ControlEvent> {
 
     public function onLocationChange():Void {
         
-        dispatchEvent({timestamp: 0, control: this}, ON_LOCATION_CHANGE);
+        dispatchEvent(this, ON_LOCATION_CHANGE);
     }
 
     public function onVisibilityChange():Void {
         
-        dispatchEvent({timestamp: 0, control: this}, ON_VISIBILITY_CHANGE);
+        dispatchEvent(this, ON_VISIBILITY_CHANGE);
     }
 
     public function onFocusGain():Void {
         
+        if (__focused) return;
+
         __focused = true;
 
-        ____canvas.selectedControl = this;
+        ____canvas.focusedControl = this;
     }
 
     public function onFocusLost():Void {
@@ -232,16 +242,21 @@ class Control extends EventDispacher<ControlEvent> {
 		return value;
     }
     
-    private function get_parent():Container {
+    private function get_parent():Control {
 
 		return ____parent;
-	}
+    }
+    
+    private function get_type():String {
+        
+        return __type;
+    }
 
     private function get_visible():Bool {
 
 		return __visible;
 	}
-	
+
 	private function set_visible(value:Bool):Bool {
         
         __visible = value;

@@ -30,6 +30,8 @@ class Slider extends Control {
         __width = width;
 
         __height = 24;
+
+        __type = "slider";
     }
 
     override function init():Void {
@@ -98,7 +100,9 @@ class Slider extends Control {
 
     override function __setGraphicX():Void {
 
-        __bitmapText.x = ____offsetX + __x;
+        //__bitmapText.x = ____offsetX + __x;
+
+        __bitmapText.x = Math.round(____offsetX + __x + (__width / 2) - (__bitmapText.width / 2));
 
         __graphic.x = ____offsetX + __x + 1;
 
@@ -107,7 +111,7 @@ class Slider extends Control {
 
     override function __setGraphicY():Void {
 
-        __bitmapText.y = ____offsetY + __y;
+        __bitmapText.y = ____offsetY + __y + 2;
 
         __graphic.y = ____offsetY + __y + 1;
 
@@ -126,6 +130,8 @@ class Slider extends Control {
         __value = Math.round(((value / (width - 1)) * 100));
 
         __bitmapText.text = Std.string(__value);
+
+        __bitmapText.x = Math.round(____offsetX + __x + (__width / 2) - (__bitmapText.width / 2));
 
         __graphic.width = (__value / 100) * (width - 2);
 

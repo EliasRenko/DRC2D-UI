@@ -5,6 +5,12 @@ import gui.core.Control;
 
 class Button extends Control {
 
+    // ** Publics.
+
+    public var text(get, set):String;
+
+    // ** Privates.
+
     /** @private **/ private var __bitmapText:Text;
 
     /** @private **/ private var __threeSlice:ThreeSlice = new ThreeSlice();
@@ -16,6 +22,8 @@ class Button extends Control {
         __bitmapText = new Text(null, text, 0, 0);
 
         __width = width;
+
+        type = "button";
     }
 
     override function init():Void {
@@ -63,19 +71,29 @@ class Button extends Control {
 
     override function __setGraphicX():Void {
 
-        __bitmapText.x = __x + (__width / 2) - (__bitmapText.width / 2);
+        __bitmapText.x = Math.round(__x + (__width / 2) - (__bitmapText.width / 2));
 
         __threeSlice.setX(__x + ____offsetX);
     }
 
     override function __setGraphicY():Void {
 
-        __bitmapText.y = ____offsetY + __y;
+        __bitmapText.y = ____offsetY + __y + 2;
 
         __threeSlice.setY(__y + ____offsetY);
     }
 
     // ** Getters and setters.
+
+    private function get_text():String {
+        
+        return __bitmapText.text;
+    }
+
+    private function set_text(value:String):String {
+
+        return __bitmapText.text = value;
+    }
 
     override function set_width(value:Float):Float {
 

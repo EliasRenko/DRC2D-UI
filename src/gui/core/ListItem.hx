@@ -2,19 +2,25 @@ package gui.core;
 
 import drc.display.Tile;
 
-class ListItem extends Container {
+class ListItem<T:Control> extends Container<T> {
+
+    // ** Publics.
+
+    public var item(get, null):T;
 
     // ** Privates.
 
     /** @private **/ private var __graphic:Tile;
 
-    public function new(control:Control, width:Float, y:Float) {
+    public function new(control:T, width:Float, y:Float) {
 
-        super(width, control.height, 0, y);
+        super(width, 0, 0, y);
+
+        __addControl(control);
 
         __graphic = new Tile(null, null);
 
-        __addControl(control);
+        __type = "listitem";
     }
 
     override function init():Void {
@@ -27,11 +33,13 @@ class ListItem extends Container {
 
         ____canvas.tilemap.addTile(__graphic);
 
+        super.init();
+
+        __height = item.height;
+
         __graphic.width = __width;
 
         __graphic.height = __height;
-
-        super.init();
     }
 
     override function release():Void {
@@ -52,6 +60,16 @@ class ListItem extends Container {
         else {
 
             onMouseEnter();
+        }
+
+        if (____canvas.leftClick) {
+             
+            onMouseLeftClick();
+
+            if (!__focused) {
+
+                onFocusGain();
+            }
         }
     }
 
@@ -80,6 +98,13 @@ class ListItem extends Container {
     }
 
     // ** Getters and setters.
+
+    private function get_item():T {
+
+        var _first = __controls.first();
+
+        return _first;
+    }
 
     override function set_visible(value:Bool):Bool {
 

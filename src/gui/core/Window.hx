@@ -1,6 +1,8 @@
 package gui.core;
 
-class Window extends Container {
+import gui.events.ControlEventType;
+
+class Window extends Container<Control> {
 
     // ** Privates.
 
@@ -14,16 +16,20 @@ class Window extends Container {
 
         __strip = new WindowStrip(text, width);
 
+        __strip.stamp_fold.addEventListener(__onFoldClickEvent, LEFT_CLICK);
+
         __panel = new WindowPanel(width, height - 24, 0, 24);
+
+        __type = "window";
     }
 
     override function init():Void {
 
-        super.init();
-
         __addControl(__strip);
 
         __addControl(__panel);
+
+        super.init();
     }
 
     public function addControl(control:Control):Control {
@@ -40,26 +46,47 @@ class Window extends Container {
         
         __panel.clear();
     }
+
+    private function __onCloseClickEvent(control:Control, type:UInt):Void {
+
+    }
+
+    private function __onFoldClickEvent(control:Control, type:UInt):Void {
+
+        __panel.visible = __panel.visible ? false : true;
+    }
 }
 
 private class WindowStrip extends Strip {
 
-    // ** Privates.
+    // ** Publics.
 
-    /** @private **/ private var __label:Label;
+    public var label:Label;
+
+    public var stamp_close:Stamp;
+
+    public var stamp_fold:Stamp;
 
     public function new(title:String, width:Float) {
         
         super(width, 0, 0);
 
-        __label = new Label(title, 0, 0);
+        label = new Label(title, 4, 2);
+
+        stamp_close = new Stamp(0, width - 20, 4);
+
+        stamp_fold = new Stamp(0, width - 36, 8);
     }
 
     override function init():Void {
 
         super.init();
 
-        super.addControl(__label);
+        super.addControl(label);
+
+        super.addControl(stamp_close);
+
+        super.addControl(stamp_fold);
     }
 
     override function __initGraphics() {
@@ -69,6 +96,15 @@ private class WindowStrip extends Strip {
         __threeSlice.get(1).id = ____canvas.tilemap.tileset.names.get('windowStrip_1');
 
         __threeSlice.get(2).id = ____canvas.tilemap.tileset.names.get('windowStrip_2');
+
+        stamp_close.id = ____canvas.tilemap.tileset.names.get('stamp_close');
+
+        stamp_fold.id = ____canvas.tilemap.tileset.names.get('stamp_fold');
+    }
+
+    override function update() {
+        
+        super.update();
     }
 }
 

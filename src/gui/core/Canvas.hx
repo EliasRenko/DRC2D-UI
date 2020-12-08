@@ -17,7 +17,7 @@ class Canvas {
 
     public var markedControl(get, set):Control;
 
-    public var selectedControl(get, set):Control;
+    public var focusedControl(get, set):Control;
 
     public var mouseX(get, null):Int;
 	
@@ -26,6 +26,8 @@ class Canvas {
     public var leftClick(get, null):Bool;
 
     public var tilemap:Tilemap;
+
+    public var toolstripmenu(get, null):Toolstripmenu;
 
     public var charmap:Charmap;
 
@@ -37,7 +39,9 @@ class Canvas {
 
     /** @private **/ private var __markedControl:Control;
 
-    /** @private **/ private var __selectedControl:Control;
+    /** @private **/ private var __focusedControl:Control;
+
+    /** @private **/ private var __toolstripmenu:Toolstripmenu;
 
     // ** Debug.
 
@@ -49,7 +53,7 @@ class Canvas {
 
     #end
 
-    public function new(parentState:State) {
+    public function new(parentState:State, toolstrip:Bool = true) {
         
         __parentState = parentState;
 
@@ -59,23 +63,30 @@ class Canvas {
 
         __markedControl = __container;
 
-        __selectedControl = __container;
+        __focusedControl = __container;
 
         tilemap = new Tilemap(Common.resources.getProfile('res/profiles/gui.json'), [Common.resources.getTexture('res/graphics/gui.png')], __loadTileset());
 
         __parentState.addGraphic(tilemap);
 
-        charmap = new Charmap(Common.resources.getProfile('res/profiles/default.json'), Common.resources.getFont('res/fonts/font.json'));
+        charmap = new Charmap(Common.resources.getProfile('res/profiles/font.json'), Common.resources.getFont('res/fonts/font.json'));
 
         __parentState.addGraphic(charmap);
+
+        if (toolstrip) {
+
+            __toolstripmenu = new Toolstripmenu();
+
+            addControl(__toolstripmenu);
+        }
 
         parser = new CanvasParser(this);
 
         //parser.parseUI(Common.resources.getText("res/ui/canvas1.json"));
 
-        var _combobox:Combobox = new Combobox(128, 32, 32);
+        //var _checkbox:Checkbox = new Checkbox(false, 32, 32);
 
-        addControl(_combobox);
+        //addControl(_checkbox);
 
         return;
 
@@ -101,7 +112,7 @@ class Canvas {
 
         //addControl(panel);
 
-        var window:Window = new Window('New Window', 128, 256, 190, 128);
+        var window:Window = new Window('Options', 128, 256, 190, 128);
 
         addControl(window);
 
@@ -109,17 +120,17 @@ class Canvas {
 
         //addControl(label);
 
-        var list:List = new List(128, 128, 128);
+        // var list:List<Control> = new List(128, 128, 128);
 
-        addControl(list);
+        // addControl(list);
 
-        var _label_1 = list.addControl(new Label('Item1', 0, 0));
-        list.addControl(new Label('Item2', 0, 0));
-        var _label_3 = list.addControl(new Label('Item3', 0, 0));
-        list.addControl(new Label('Item4', 0, 0));
-        var _label_5 = list.addControl(new Label('Item5', 0, 0));
+        // var _label_1 = list.addControl(new Label('Item1', 0, 0));
+        // list.addControl(new Label('Item2', 0, 0));
+        // var _label_3 = list.addControl(new Label('Item3', 0, 0));
+        // list.addControl(new Label('Item4', 0, 0));
+        // var _label_5 = list.addControl(new Label('Item5', 0, 0));
 
-        list.removeControl(_label_3);
+        // list.removeControl(_label_3);
         //list.removeControl(_label_5);
 
         var slider:Slider = new Slider(230, 256, 68);
@@ -214,18 +225,23 @@ class Canvas {
         return control;
     }
 
-    private function get_selectedControl():Control {
+    private function get_focusedControl():Control {
 
-        return __selectedControl;
+        return __focusedControl;
     }
 
-    private function set_selectedControl(control:Control):Control {
+    private function set_focusedControl(control:Control):Control {
 
-        __selectedControl.onFocusLost();
+        __focusedControl.onFocusLost();
 
-        __selectedControl = control;
+        __focusedControl = control;
 
         return control;
+    }
+
+    private function get_toolstripmenu():Toolstripmenu {
+        
+        return __toolstripmenu;
     }
 
     private function get_mouseX():Int {
@@ -253,11 +269,13 @@ class Canvas {
     #end
 }
 
-private class RootContainer extends Container {
+private class RootContainer extends Container<Control> {
 
     public function new(width:Float, height:Float) {
 
         super(width, height, 0, 0);
+
+        __type = "canvas";
     }
 
     public function addControl(control:Control):Control {
@@ -310,10 +328,6 @@ private class CanvasParser {
                 }
             }
         }
-    }
-
-    private function checkContainer(container:Container, controlData:Dynamic):Void {
-        
     }
 
     private function addLabel(text:String, x:Float, y:Float):Label {

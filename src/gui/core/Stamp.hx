@@ -13,13 +13,13 @@ class Stamp extends Control {
 
     /** @private **/ private var __graphic:Tile;
 
-    /** @private **/ private var __id:Int;
-
-    public function new(id:UInt, x:Int = 0, y:Int = 0) {
+    public function new(id:UInt, x:Float, y:Float) {
         
         super(x, y);
 
         __graphic = new Tile(null, id);
+
+        __type = 'stamp';
     }
 
     override function init():Void {
@@ -49,25 +49,9 @@ class Stamp extends Control {
         super.update();
     }
 
-    override function onMouseEnter():Void {
-
-        super.onMouseEnter();
-
-        trace('Enter');
-    }
-
-    override function onMouseLeave():Void {
-
-        super.onMouseLeave();
-
-        trace('Leave');
-    }
-
-    override function onMouseHover():Void {
-
-        super.onMouseHover();
-
-        trace('Hover');
+    override function onMouseLeftClick() {
+        
+        super.onMouseLeftClick();
     }
 
     override function __setGraphicX():Void {
@@ -84,11 +68,17 @@ class Stamp extends Control {
 
     private function get_id():Int {
 
-        return __id;
+        return __graphic.id;
     }
     
     private function set_id(value:Int):Int {
         
-        return __id = value;
+        __graphic.id = value;
+
+        __width = __graphic.width;
+
+        __height = __graphic.height;
+
+        return value;
     }
 }

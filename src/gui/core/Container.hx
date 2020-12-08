@@ -1,25 +1,28 @@
 package gui.core;
 
+import gui.core.Control;
 import gui.events.ControlEventType;
 import haxe.ds.List;
 
-class Container extends Control {
+class Container<T:Control> extends Control {
 
     // ** Publics.
 
-    public var controls(get, null):List<Control>;
+    public var controls(get, null):List<T>;
 
     // ** Privates.
 
-    /** @private **/ private var __controls:List<Control> = new List<Control>();
+    /** @private **/ private var __controls:List<T> = new List<T>();
 
     public function new(width:Float, height:Float, x:Float, y:Float) {
         
+        super(x, y);
+
         __width = width;
 
         __height = height;
 
-        super(x, y);
+        __type = "container";
     }
 
     override function init():Void {
@@ -39,7 +42,7 @@ class Container extends Control {
         super.release();
     }
 
-    private function __addControl(control:Control):Control {
+    private function __addControl(control:T):T {
         
         if (control.active) return control;
 
@@ -50,14 +53,14 @@ class Container extends Control {
 
         __controls.add(control);
 
-        control.dispatchEvent({timestamp: 0, control: control}, ADDED);
+        control.dispatchEvent(control, ADDED);
 
         return control;
     }
 
-    private function __removeControl(control:Control):Void {
+    private function __removeControl(control:T):Void {
 
-        control.dispatchEvent({timestamp: 0, control: control}, REMOVED);
+        control.dispatchEvent(control, REMOVED);
 
         control.release();
 
@@ -115,13 +118,31 @@ class Container extends Control {
         control.visible = control.visible ? __visible : false;
 
         control.init();
+    }
 
-        control.dispatchEvent({timestamp: 0, control: this}, INIT);
+    override function ____setOffsetX(value:Float):Void {
+        
+        super.____setOffsetX(value);
+
+        for (control in __controls) {
+
+            @:privateAccess control.____setOffsetX(__x + ____offsetX);
+        }
+    }
+
+    override function ____setOffsetY(value:Float):Void {
+        
+        super.____setOffsetY(value);
+
+        for (control in __controls) {
+
+            @:privateAccess control.____setOffsetY(__y + ____offsetY);
+        }
     }
 
     // ** Getters and setters.
 
-    private function get_controls():List<Control> {
+    private function get_controls():List<T> {
 
 		return __controls;
     }

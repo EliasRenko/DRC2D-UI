@@ -16,9 +16,7 @@ class Label extends Control {
 
         __bitmapText = new Text(null, text, x, y);
 
-        __width = __bitmapText.width;
-
-        __height = __bitmapText.height;
+        __type = "label";
     }
 
     override function init():Void {
@@ -28,6 +26,10 @@ class Label extends Control {
         __bitmapText.parent = ____canvas.charmap;
 
         __bitmapText.addToParent();
+
+        __width = __bitmapText.width;
+
+        __height = __bitmapText.height;
     }
 
     override function release():Void {
@@ -37,14 +39,9 @@ class Label extends Control {
         super.release();
     }
 
-    override function update():Void {
+    override function onMouseLeftClick() {
 
-        super.update();
-
-        if (____canvas.leftClick) {
-             
-            onMouseLeftClick();
-        }
+        super.onMouseLeftClick();
     }
 
     override function __setGraphicX():Void {

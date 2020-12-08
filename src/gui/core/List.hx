@@ -1,58 +1,112 @@
 package gui.core;
 
 import gui.core.ListItem;
+import gui.events.ControlEventType;
 
-class List extends Container {
+class List<T:Control> extends Container<ListItem<T>> {
 
     public function new(width:Float, x:Float, y:Float) {
         
         super(width, 0, x, y);
+
+        type = 'list';
     }
 
-    public function addControl(control:Control):Control {
+    override function init() {
 
-        var _listItem:ListItem = new ListItem(control, width, height);
+        super.init();
 
-        height += _listItem.height;
+        for (listItem in __controls) {
 
-        return __addControl(_listItem);
-    }
+            listItem.y = height;
 
-    public function removeControl(control:Control):Void {
-
-        __removeControl(control);
-
-        height -= control.height;
-
-        var _y:Float = 0;
-
-        for (control in __controls) {
-
-            control.y = _y;
-
-            _y += control.height;
+            height += listItem.height;
         }
     }
 
-    override function onMouseEnter():Void {
+    public function addControl(control:T):Control {
 
-        super.onMouseEnter();
+        var _listItem:ListItem<T> = new ListItem(control, width, 0);
+
+        _listItem.addEventListener(__onItemClickEvent, LEFT_CLICK);
+
+        // **
+
+        __addControl(_listItem);
+
+        if (____canvas != null) {
+            
+            _listItem.y = height;
+
+            height += _listItem.height;
+		}
+
+        return _listItem;
     }
 
-    override function update():Void {
+    public function removeControl(control:T):Bool {
 
-        super.update();
-    }
+        for (listItem in __controls) {
 
-    // ** Getters and setters.
+            if (listItem.item == control) {
 
-    override function set_visible(value:Bool):Bool {
+                __removeControl(listItem);
 
-        for (control in __controls) {
+                height -= control.height;
 
-            control.visible = value;
+                var _y:Float = 0;
+        
+                for (listItem in __controls) {
+        
+                    listItem.y = _y;
+        
+                    _y += listItem.height;
+                }
+
+                return true;
+            }
         }
 
-        return super.set_visible(value);
+        return false;
+    }
+
+    public function removeControlAt(index:UInt):Bool {
+        
+        var i:Int = 0;
+
+        for (listItem in __controls) {
+
+            if (i == index) {
+
+                __removeControl(listItem);
+
+                height -= listItem.height;
+
+                var _y:Float = 0;
+        
+                for (listItem in __controls) {
+        
+                    listItem.y = _y;
+        
+                    _y += listItem.height;
+                }
+
+                return true;
+            }
+
+            i ++;
+        }
+
+        return false;
+    }
+
+    public function onItemClick(control:Control):Void {
+        
+        dispatchEvent(control, ON_ITEM_CLICK);
+    }
+
+    private function __onItemClickEvent(control:Control, type:UInt):Void {
+
+        onItemClick(control);
     }
 }
