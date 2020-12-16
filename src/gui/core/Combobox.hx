@@ -18,7 +18,7 @@ class Combobox extends Container<Control> {
 
         __panel = new ComboboxPanel(width, 0, 24);
 
-        __panel.list.addEventListener(__onItemClick, ON_ITEM_CLICK);
+        __panel.list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
 
         __type = 'combobox';
     }
@@ -74,7 +74,7 @@ class Combobox extends Container<Control> {
         super.onFocusLost();
     }
 
-    private function __onItemClick(control:Control, type:UInt):Void {
+    private function __onItemClickEvent(control:Control, type:UInt):Void {
         
         var _listItem:ListItem<Label> = cast control;
 

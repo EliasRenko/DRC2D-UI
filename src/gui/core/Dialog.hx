@@ -8,4 +8,9 @@ class Dialog extends Window {
 
         __type = 'dialog';
     }
+
+    override function update() {
+        
+        super.update();
+    }
 }

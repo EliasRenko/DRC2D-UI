@@ -84,7 +84,15 @@ class Canvas {
             addControl(__toolstripmenu);
         }
 
-        dialog = new Dialog('Intro', 256, 256);
+        __dialog = new Dialog('Intro', 256, 256);
+
+        addControl(__dialog);
+
+        __dialog.visible = true;
+
+        __dialog.x = Math.round(__container.width / 2) - (__dialog.width / 2);
+
+        __dialog.y = Math.round(__container.height / 2) - (__dialog.height / 2);
 
         parser = new CanvasParser(this);
 
@@ -93,6 +101,8 @@ class Canvas {
         //var _checkbox:Checkbox = new Checkbox(false, 32, 32);
 
         //addControl(_checkbox);
+
+        tilemap.uniforms.get('resolution').value = [640.0, 480.0];
 
         return;
 
@@ -239,6 +249,15 @@ class Canvas {
 
     private function set_dialog(dialog:Dialog):Dialog {
         
+        if (__dialog == dialog) {
+
+            __dialog.visible = true;
+
+            return __dialog;
+        }
+
+        removeControl(__dialog);
+
         addControl(dialog);
 
         __dialog = dialog;

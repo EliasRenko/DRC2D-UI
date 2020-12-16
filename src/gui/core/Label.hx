@@ -83,9 +83,4 @@ class Label extends Control {
 
         return super.set_visible(value);
     }
-
-    override function get_width():Float {
-
-        return super.get_width();
-    }
 }

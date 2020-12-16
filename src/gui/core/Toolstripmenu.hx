@@ -5,11 +5,17 @@ import gui.events.ControlEventType;
 
 class Toolstripmenu extends Container<Control> {
 
+    // ** Publics.
+
+    public var selection(get, null):String;
+
     // ** Privates.
 
     private var __strip:ToolstripBar;
 
     private var __focusedPanel:Control;
+
+    private var __selection:String = "";
 
     public function new() {
         
@@ -31,11 +37,11 @@ class Toolstripmenu extends Container<Control> {
         
         var _toolstripPanel:ToolstripPanel = new ToolstripPanel(128, 0, 24);
 
+        _toolstripPanel.list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
+
         ____canvas.addControl(_toolstripPanel);
 
         var _label:ToolstripLabel = new ToolstripLabel(text, _toolstripPanel, 0, 0);
-
-        _label.addEventListener(__onItemClickEvent, LEFT_CLICK);
 
         __strip.addControl(_label);
 
@@ -54,16 +60,25 @@ class Toolstripmenu extends Container<Control> {
         __strip.removeControl(label);
     }
 
-    override function update():Void {
-
-        super.update();   
+    public function onItemClick():Void {
+        
+        dispatchEvent(this, ON_ITEM_CLICK);
     }
 
     private function __onItemClickEvent(control:Control, type:UInt):Void {
         
-        var _toolstripLabel:ToolstripLabel = cast control;
+        var _listItem:ListItem<Label> = cast control;
 
-        //_toolstripLabel.toolstripPanel.onFocusGain();
+        __selection = _listItem.item.text;
+
+        onItemClick();
+    }
+
+    // ** Getters and setters.
+
+    private function get_selection():String {
+        
+        return __selection;
     }
 }
 
@@ -119,6 +134,8 @@ private class ToolstripPanel extends Panel {
         super(width, 0, x, y);
 
         list = new List(width, 0, 0);
+
+        list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
     }
 
     override function init():Void {
@@ -163,5 +180,9 @@ private class ToolstripPanel extends Panel {
         visible = false;
 
         super.onFocusLost();
+    }
+
+    private function __onItemClickEvent(control:Control, type:UInt):Void {
+        
     }
 }
