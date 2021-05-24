@@ -21,11 +21,15 @@ class Canvas {
 
     public var focusedControl(get, set):Control;
 
+    public var contextMenu:ContextMenu;
+
     public var mouseX(get, null):Int;
 	
     public var mouseY(get, null):Int;
     
     public var leftClick(get, null):Bool;
+
+    public var rightClick(get, null):Bool;
 
     public var tilemap:Tilemap;
 
@@ -73,13 +77,15 @@ class Canvas {
 
         __parentState.addGraphic(tilemap);
 
-        charmap = new Charmap(Common.resources.getProfile('res/profiles/font.json'), Common.resources.getFont('res/fonts/font.json'));
+        charmap = new Charmap(Common.resources.getProfile('res/profiles/font copy.json'), Common.resources.getFont('res/fonts/font.json'));
 
         __parentState.addGraphic(charmap);
 
         if (toolstrip) {
 
             __toolstripmenu = new Toolstripmenu();
+
+            __toolstripmenu.z = -32;
 
             addControl(__toolstripmenu);
         }
@@ -229,7 +235,26 @@ class Canvas {
             return;
         }
 
+        if (contextMenu != null) {
+
+            contextMenu.update();
+
+            if (leftClick || rightClick) {
+
+                contextMenu.visible = false;
+
+                contextMenu = null;
+            }
+            else 
+            if (contextMenu.visible) {
+
+                return;
+            }
+        }
+
         __container.update();
+
+        return;
     }
 
     public function startTextInput(textfield:Textfield):Void {
@@ -266,6 +291,8 @@ class Canvas {
 
         __dialog.y = Math.round(__container.height / 2) - (__dialog.height / 2);
 
+        __dialog.z = -128;
+
         return __dialog;
     }
 
@@ -289,6 +316,8 @@ class Canvas {
     }
 
     private function set_focusedControl(control:Control):Control {
+
+        if (control == null) control = __container;
 
         __focusedControl.onFocusLost();
 
@@ -315,6 +344,11 @@ class Canvas {
     private function get_leftClick():Bool {
 
         return Common.input.mouse.leftClick;
+    }
+
+    private function get_rightClick():Bool {
+
+        return Common.input.mouse.rightClick;
     }
 
     #if debug
@@ -344,6 +378,11 @@ private class RootContainer extends Container<Control> {
     public function removeControl(control:Control):Void {
         
         return __removeControl(control);
+    }
+
+    override function get_contextMenu():ContextMenu {
+
+        return null;
     }
 }
 

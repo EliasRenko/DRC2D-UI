@@ -77,6 +77,11 @@ class Strip extends Container<Control> {
         __threeSlice.setY(__y + ____offsetY);
     }
 
+    override function __setGraphicZ():Void {
+        
+        __threeSlice.setZ(__z);
+    }
+
     // ** Getters and setters.
 
     override function set_width(value:Float):Float {

@@ -91,6 +91,11 @@ class Panel extends Container<Control> {
         __nineSlice.setY(__y + ____offsetY);
     }
 
+    override function __setGraphicZ():Void {
+        
+        __nineSlice.setZ(__z);
+    }
+
     // ** Getters and setters.
 
     override function set_height(value:Float):Float {

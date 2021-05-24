@@ -16,6 +16,10 @@ class Combobox extends Container<Control> {
 
         __button = new Button('text', width, 0, 0);
 
+        __button.addEventListener(__onButtonFocusGain, ON_FOCUS_GAIN);
+
+        __button.addEventListener(__onButtonFocusLost, ON_FOCUS_LOST);
+
         __panel = new ComboboxPanel(width, 0, 24);
 
         __panel.list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
@@ -62,16 +66,22 @@ class Combobox extends Container<Control> {
 
     override function onFocusGain():Void {
 
-        __panel.visible = true;
-
         super.onFocusGain();
     }
 
     override function onFocusLost():Void {
 
-        __panel.visible = false;
-
         super.onFocusLost();
+    }
+
+    private function __onButtonFocusGain(control:Control, type:UInt):Void {
+        
+        __panel.visible = true;
+    }
+
+    private function __onButtonFocusLost(control:Control, type:UInt):Void {
+        
+        __panel.visible = false;
     }
 
     private function __onItemClickEvent(control:Control, type:UInt):Void {

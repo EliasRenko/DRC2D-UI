@@ -88,4 +88,11 @@ class Stamp extends Control {
 
         return super.set_visible(value);
     }
+
+    override function set_z(value:Float):Float {
+
+        __graphic.z = value;
+
+        return super.set_z(value);
+    }
 }

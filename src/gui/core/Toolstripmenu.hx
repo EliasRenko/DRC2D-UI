@@ -11,11 +11,11 @@ class Toolstripmenu extends Container<Control> {
 
     // ** Privates.
 
-    private var __strip:ToolstripBar;
+    /** @private **/ private var __strip:ToolstripBar;
 
-    private var __focusedPanel:Control;
+    /** @private **/ private var __focusedPanel:Control;
 
-    private var __selection:String = "";
+    /** @private **/private var __selection:String = "";
 
     public function new() {
         
@@ -38,6 +38,8 @@ class Toolstripmenu extends Container<Control> {
         var _toolstripPanel:ToolstripPanel = new ToolstripPanel(128, 0, 24);
 
         _toolstripPanel.list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
+
+        _toolstripPanel.z = __z;
 
         ____canvas.addControl(_toolstripPanel);
 

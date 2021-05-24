@@ -9,7 +9,12 @@ class Dialog extends Window {
         __type = 'dialog';
     }
 
-    override function update() {
+    override function init() {
+        
+        super.init();
+    }
+
+    override function update():Void {
         
         super.update();
     }

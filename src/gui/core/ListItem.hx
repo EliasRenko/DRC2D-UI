@@ -68,7 +68,7 @@ class ListItem<T:Control> extends Container<T> {
 
             if (!__focused) {
 
-                onFocusGain();
+                //onFocusGain();
             }
         }
     }
@@ -111,5 +111,12 @@ class ListItem<T:Control> extends Container<T> {
         __controls.first().visible = value;
 
         return super.set_visible(value);
+    }
+
+    override function set_z(value:Float):Float {
+
+        __graphic.z = value;
+
+        return super.set_z(value);
     }
 }

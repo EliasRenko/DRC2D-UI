@@ -56,4 +56,12 @@ abstract ThreeSlice(Vector<Tile>) from Vector<Tile> to Vector<Tile> {
             tile.y = value;
         }
     }
+
+    public function setZ(value:Float):Void {
+        
+        for (tile in this) {
+
+            tile.z = value;
+        }
+    }
 }

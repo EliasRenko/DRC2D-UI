@@ -58,7 +58,11 @@ class Textfield extends Control {
 
         __threeSlice.setWidth(__width);
 
+        __threeSlice.setZ(z);
+
         __bitmapText.parent = ____canvas.charmap;
+
+        __bitmapText.z = z - 1;
 
         __bitmapText.addToParent();
 
@@ -69,6 +73,8 @@ class Textfield extends Control {
         __graphic.height = ____canvas.charmap.ascend;
 
         __graphic.visible = false;
+
+        __graphic.z = z - 1;
 
         ____canvas.tilemap.addTile(__graphic);
 
@@ -85,6 +91,19 @@ class Textfield extends Control {
         __bitmapText.dispose();
 
         super.release();
+    }
+
+    override function update() {
+
+        super.update();
+
+        if (__focused) {
+
+            if (Common.input.keyboard.pressed(40)) {
+
+                ____canvas.focusedControl = null;
+            }
+        }
     }
 
     private function __initGraphics():Void {

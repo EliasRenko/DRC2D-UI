@@ -13,6 +13,8 @@ class Control extends EventDispacher<Control> {
 
     public var canvas(get, null):Canvas;
 
+    public var contextMenu(get, set):ContextMenu;
+
     public var height(get, set):Float;
 
     public var parent(get, null):Control;
@@ -33,6 +35,8 @@ class Control extends EventDispacher<Control> {
 
     /** @private **/ private var __active:Bool = false;
 
+    /** @private **/ private var __contextMenu:ContextMenu;
+
     /** @private **/ private var __focused:Bool = false;
 
     /** @private **/ private var __height:Float;
@@ -47,11 +51,11 @@ class Control extends EventDispacher<Control> {
 
     /** @private **/ private var __width:Float;
 
-    /** @private **/ private var __x:Float;
+    /** @private **/ private var __x:Float = 0;
 
-    /** @private **/ private var __y:Float;
+    /** @private **/ private var __y:Float = 0;
 
-    /** @private **/ private var __z:Float;
+    /** @private **/ private var __z:Float = 0;
 
     // ** Privates with access.
 
@@ -124,9 +128,31 @@ class Control extends EventDispacher<Control> {
                 onFocusGain();
             }
         }
+
+        if (____canvas.rightClick) {
+             
+            var _contextMenu:ContextMenu = contextMenu;
+
+            if (_contextMenu == null) return;
+
+            _contextMenu.visible = true;
+
+            _contextMenu.x = ____canvas.mouseX;
+
+            _contextMenu.y = ____canvas.mouseY;
+
+            ____canvas.contextMenu = contextMenu;
+
+            onMouseRightClick();
+        }
     }
 
     public function onMouseLeftClick():Void {
+
+        dispatchEvent(this, LEFT_CLICK);
+    }
+
+    public function onMouseRightClick():Void {
 
         dispatchEvent(this, LEFT_CLICK);
     }
@@ -178,11 +204,15 @@ class Control extends EventDispacher<Control> {
         __focused = true;
 
         ____canvas.focusedControl = this;
+
+        dispatchEvent(this, ON_FOCUS_GAIN);
     }
 
     public function onFocusLost():Void {
         
         __focused = false;
+
+        dispatchEvent(this, ON_FOCUS_LOST);
     }
 
     // ** Privates.
@@ -190,6 +220,8 @@ class Control extends EventDispacher<Control> {
     private function __setGraphicX():Void {}  
 
     private function __setGraphicY():Void {}
+
+    private function __setGraphicZ():Void {}
 
     // ** Privates with access.
 
@@ -226,6 +258,21 @@ class Control extends EventDispacher<Control> {
     private function get_canvas():Canvas {
         
         return canvas;
+    }
+
+    private function get_contextMenu():ContextMenu {
+        
+        if (__contextMenu == null) {
+
+            return parent.contextMenu;
+        }
+
+        return __contextMenu;
+    }
+
+    private function set_contextMenu(value:ContextMenu):ContextMenu {
+
+        return __contextMenu = value;
     }
 
     private function get_height():Float {
@@ -317,6 +364,10 @@ class Control extends EventDispacher<Control> {
 	
 	private function set_z(value:Float):Float {
 		
-		return __z = value;
+        __z = value;
+
+        __setGraphicZ();
+
+		return value;
 	}
 }

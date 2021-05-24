@@ -83,4 +83,11 @@ class Label extends Control {
 
         return super.set_visible(value);
     }
+
+    override function set_z(value:Float):Float {
+
+        __bitmapText.z = value;
+
+        return super.set_z(value);
+    }
 }

@@ -21,6 +21,8 @@ class Button extends Control {
 
         __bitmapText = new Text(null, text, 0, 0);
 
+        __height = 24;
+
         __width = width;
 
         type = 'button';
@@ -83,6 +85,14 @@ class Button extends Control {
         __threeSlice.setY(__y + ____offsetY);
     }
 
+    override function onFocusGain() {
+        super.onFocusGain();
+    }
+
+    override function onFocusLost() {
+        super.onFocusLost();
+    }
+
     // ** Getters and setters.
 
     private function get_text():String {
@@ -95,12 +105,30 @@ class Button extends Control {
         return __bitmapText.text = value;
     }
 
-    override function set_width(value:Float):Float {
+    override function set_visible(value:Bool):Bool {
 
-        __bitmapText.x = __x + (value / 2) - (__bitmapText.width / 2);
+        __threeSlice.setVisible(value);
+
+        __bitmapText.visible = value;
+
+        return super.set_visible(value);
+    }
+
+    override function set_width(value:Float):Float {
 
         __threeSlice.setWidth(value);
 
+        __bitmapText.x = __x + (value / 2) - (__bitmapText.width / 2);
+
         return super.set_width(value);
+    }
+
+    override function set_z(value:Float):Float {
+
+        __threeSlice.setZ(value);
+
+        __bitmapText.z = value - 1;
+
+        return super.set_z(value);
     }
 }

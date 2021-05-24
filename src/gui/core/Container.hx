@@ -107,15 +107,17 @@ class Container<T:Control> extends Control {
     
     private function __initControl(control:Control) {
         
-        @:privateAccess control.____canvas = ____canvas;
+        @:privateAccess control.____canvas = ____canvas; // ** Define metadata privateAccess.
 
-        @:privateAccess control.____offsetX = __x + ____offsetX;
+        @:privateAccess control.____offsetX = __x + ____offsetX; // ** Define metadata privateAccess.
 		
-        @:privateAccess control.____offsetY = __y + ____offsetY;
+        @:privateAccess control.____offsetY = __y + ____offsetY; // ** Define metadata privateAccess.
         
-        @:privateAccess control.____parent = this;
+        @:privateAccess control.____parent = this; // ** Define metadata privateAccess.
 
         control.visible = control.visible ? __visible : false;
+
+        if (control.z == 0) control.z += __z - 2;
 
         control.init();
     }
@@ -176,6 +178,18 @@ class Container<T:Control> extends Control {
         for (control in __controls) {
 
             @:privateAccess control.____setOffsetY(__y + ____offsetY);
+        }
+
+        return value;
+    }
+
+    override function set_z(value:Float):Float {
+
+        super.set_z(value);
+
+        for (control in __controls) {
+
+            control.z += __z - 2;
         }
 
         return value;

@@ -24,6 +24,11 @@ class List<T:Control> extends Container<ListItem<T>> {
         }
     }
 
+    override function release() {
+        
+        super.release();
+    }
+
     public function addControl(control:T):Control {
 
         var _listItem:ListItem<T> = new ListItem(control, width, 0);
@@ -98,6 +103,13 @@ class List<T:Control> extends Container<ListItem<T>> {
         }
 
         return false;
+    }
+
+    public function clear():Void {
+        
+        height = 0;
+
+        __clear();
     }
 
     public function onItemClick(control:Control):Void {

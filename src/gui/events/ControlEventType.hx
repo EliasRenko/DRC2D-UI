@@ -43,5 +43,11 @@ package gui.events;
     var ON_FOLD_CLICK = 19;
 
     var ON_TEXT_INPUT = 20;
+
+    var ON_FOCUS_GAIN = 21;
+
+    var ON_FOCUS_LOST = 22;
+
+    var ON_FILE_SELECT = 23;
 }
 	
