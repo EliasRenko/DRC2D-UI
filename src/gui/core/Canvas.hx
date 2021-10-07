@@ -31,6 +31,10 @@ class Canvas {
 
     public var rightClick(get, null):Bool;
 
+    public var leftClickUp(get, null):Bool;
+
+    public var rightClickUp(get, null):Bool;
+
     public var tilemap:Tilemap;
 
     public var toolstripmenu(get, null):Toolstripmenu;
@@ -77,7 +81,7 @@ class Canvas {
 
         __parentState.addGraphic(tilemap);
 
-        charmap = new Charmap(Common.resources.getProfile('res/profiles/font copy.json'), Common.resources.getFont('res/fonts/font.json'));
+        charmap = new Charmap(Common.resources.getProfile('res/profiles/font copy.json'), Common.resources.getFont('res/fonts/nokiafc22.json'));
 
         __parentState.addGraphic(charmap);
 
@@ -155,9 +159,9 @@ class Canvas {
         // list.removeControl(_label_3);
         //list.removeControl(_label_5);
 
-        var slider:Slider = new Slider(230, 256, 68);
+        //var slider:Slider = new Slider(230, 256, 68);
 
-        addControl(slider);
+        //addControl(slider);
 
         var button:Button = new Button("Confirm", 128, 128, 32);
 
@@ -347,6 +351,16 @@ class Canvas {
     }
 
     private function get_rightClick():Bool {
+
+        return Common.input.mouse.rightClick;
+    }
+
+    private function get_leftClickUp():Bool {
+
+        return Common.input.mouse.leftClick;
+    }
+
+    private function get_rightClickUp():Bool {
 
         return Common.input.mouse.rightClick;
     }

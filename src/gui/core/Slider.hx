@@ -17,13 +17,15 @@ class Slider extends Control {
 
     /** @private **/ private var __threeSlice:ThreeSlice = new ThreeSlice();
 
+    /** @private **/ private var __mouseHold:Bool = false;
+
     /** @private **/ private var __value:Float;
 
-    public function new(width:Float, x:Float, y:Float) {
+    public function new(text:String, width:Float, x:Float, y:Float) {
         
         super(x, y);
 
-        __bitmapText = new Text(null, "", 2, 2);
+        __bitmapText = new Text(null, text, 2, 2);
 
         __graphic = new Tile(null, null);
 
@@ -49,6 +51,8 @@ class Slider extends Control {
 
         __threeSlice.setWidth(__width);
 
+        __threeSlice.setZ(z);
+
         __graphic.parentTilemap = ____canvas.tilemap;
 
         __graphic.width = 32;
@@ -57,9 +61,13 @@ class Slider extends Control {
 
         __graphic.visible = visible;
 
+        __graphic.z = z - 1;
+
         ____canvas.tilemap.addTile(__graphic);
 
         __bitmapText.parent = ____canvas.charmap;
+
+        __bitmapText.z = z - 2;
 
         __bitmapText.addToParent();
 
@@ -82,9 +90,19 @@ class Slider extends Control {
 
     override function onMouseLeftClick():Void {
 
-        value = ____canvas.mouseX - __x - 1;
+        __mouseHold = true;
 
         super.onMouseLeftClick();
+    }
+
+    override function onMouseHover():Void {
+
+        if (__mouseHold) {
+
+            value = ____canvas.mouseX - (__x + ____offsetX) - 1;
+        }
+
+        super.onMouseHover();
     }
 
     private function __initGraphics():Void {

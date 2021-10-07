@@ -1,5 +1,6 @@
 package gui.core;
 
+import gui.core.AlignType;
 import drc.core.EventDispacher;
 import drc.math.Rectangle;
 import gui.events.ControlEvent;
@@ -10,6 +11,8 @@ class Control extends EventDispacher<Control> {
     // ** Publics.
 
     public var active(get, null):Bool;
+
+    public var alignType(get, null):AlignType;
 
     public var canvas(get, null):Canvas;
 
@@ -34,6 +37,10 @@ class Control extends EventDispacher<Control> {
     // ** Privates.
 
     /** @private **/ private var __active:Bool = false;
+
+    /** @private **/ private var __alignType:AlignType = VERTICAL;
+
+    /** @private **/ private var __alignOffset:Int = 2;
 
     /** @private **/ private var __contextMenu:ContextMenu;
 
@@ -64,6 +71,8 @@ class Control extends EventDispacher<Control> {
     /** @private **/ @:noCompletion private var ____offsetX:Float = 0;
 	
     /** @private **/ @:noCompletion private var ____offsetY:Float = 0;
+
+    /** @private **/ @:noCompletion private var ____shouldAlign:Bool = true;
     
     /** @private **/ @:noCompletion private var ____parent:Control;
 
@@ -246,6 +255,11 @@ class Control extends EventDispacher<Control> {
     private function get_active():Bool {
 
 		return __active;
+	}
+
+    private function get_alignType():AlignType {
+
+		return __alignType;
 	}
 	
 	private function set_active(value:Bool):Bool {

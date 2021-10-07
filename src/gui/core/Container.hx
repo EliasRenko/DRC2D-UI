@@ -14,6 +14,8 @@ class Container<T:Control> extends Control {
 
     /** @private **/ private var __controls:List<T> = new List<T>();
 
+    /** @private **/ private var __lastAlignedControl:Null<Control> = null;
+
     public function new(width:Float, height:Float, x:Float, y:Float) {
         
         super(x, y);
@@ -50,6 +52,8 @@ class Container<T:Control> extends Control {
 			
 			__initControl(control);
 		}
+
+        __alignControl(control);
 
         __controls.add(control);
 
@@ -103,6 +107,47 @@ class Container<T:Control> extends Control {
     override function onMouseHover():Void {
 
         super.onMouseHover();
+    }
+
+    private function __alignControl(control:Control):Void {
+
+        // ** Define metadata `privateAccess`.
+        if (@:privateAccess control.____shouldAlign) {
+
+            if (control.x == 0 || control.y == 0) {
+
+                if (__lastAlignedControl == null) {
+
+                    control.x = control.__alignOffset;
+
+                    control.y = control.__alignOffset;
+                }
+                else {
+
+                    switch (control.alignType) {
+
+                        case NONE: 
+
+                            return;
+
+                        case VERTICAL: 
+
+                            control.x = 2;
+
+                            control.y = __lastAlignedControl.y + __lastAlignedControl.height + control.__alignOffset;
+
+                        case HORIZONTAL:
+
+                            control.x = __lastAlignedControl.x + __lastAlignedControl.width + control.__alignOffset;
+
+                            control.y = 2;
+                    }
+
+                }
+
+                __lastAlignedControl = control;
+            }
+        }
     }
     
     private function __initControl(control:Control) {

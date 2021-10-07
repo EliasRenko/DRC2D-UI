@@ -7,6 +7,8 @@ class Dialog extends Window {
         super(text, width, height, 0, 0);
 
         __type = 'dialog';
+
+        ____shouldAlign = false;
     }
 
     override function init() {

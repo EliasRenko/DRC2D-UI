@@ -23,6 +23,8 @@ class Toolstripmenu extends Container<Control> {
 
         __strip = new ToolstripBar();
 
+        __alignOffset = 0;
+
         __type = 'toolstrip';
     }
 
@@ -138,6 +140,8 @@ private class ToolstripPanel extends Panel {
         list = new List(width, 0, 0);
 
         list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
+
+        ____shouldAlign = false;
     }
 
     override function init():Void {
