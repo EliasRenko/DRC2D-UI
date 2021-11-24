@@ -1,6 +1,7 @@
 package gui.core;
 
 import gui.core.NineSlice;
+import gui.core.ScrollBar;
 
 class Panel extends Container<Control> {
 
@@ -8,9 +9,13 @@ class Panel extends Container<Control> {
 
     /** @private **/ private var __nineSlice:NineSlice = new NineSlice();
 
-    public function new(width:Float, heigth:Float, x:Float, y:Float) {
+    /** @private **/ private var __scrollBar:ScrollBar;
 
-        super(width, heigth, x, y);
+    public function new(width:Float, heigth:Float, alignType:AlignType = VERTICAL, x:Float = 0, y:Float = 0) {
+
+        super(width, heigth, alignType, x, y);
+
+        __scrollBar = new ScrollBar();
 
         type = 'panel';
     }
@@ -32,6 +37,12 @@ class Panel extends Container<Control> {
 
         __nineSlice.setHeight(__height);
 
+        __scrollBar.x = __x + ____offsetY + (__width - 24);
+
+        __scrollBar.visible = false;
+
+        addControl(__scrollBar);
+
         super.init();
     }
 
@@ -47,7 +58,31 @@ class Panel extends Container<Control> {
 
     public function addControl(control:Control):Control {
         
-        return __addControl(control);
+        __addControl(control);
+
+        if (__controlsHeight > __height) {
+
+            __scrollBar.height = __height;
+
+            // ** 
+
+            var _dif:Float = __controlsHeight - __height;
+
+            if (_dif > 0) {
+    
+                __scrollBar.visible = true;
+    
+                var perc_available = (_dif / height) * 100;
+    
+                //__scrollBar.height = height - (height * perc_available) / 100;
+    
+                __scrollBar.value = height - (height * perc_available) / 100;
+
+                return control;
+            }            
+        }
+
+        return control;
     }
 
     public function removeControl(control:Control):Void {
@@ -102,12 +137,16 @@ class Panel extends Container<Control> {
 
         __nineSlice.setHeight(value);
 
+        __scrollBar.height = value;
+
         return super.set_height(value);
     }
 
     override function set_visible(value:Bool):Bool {
 
         __nineSlice.setVisible(value);
+
+        __scrollBar.visible = value;
 
         return super.set_visible(value);
     }

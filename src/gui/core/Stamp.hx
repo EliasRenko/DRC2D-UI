@@ -13,9 +13,9 @@ class Stamp extends Control {
 
     /** @private **/ private var __graphic:Tile;
 
-    public function new(id:UInt, x:Float, y:Float) {
+    public function new(id:UInt, alignType:AlignType, x:Float, y:Float) {
         
-        super(x, y);
+        super(alignType, x, y);
 
         __graphic = new Tile(null, id);
 

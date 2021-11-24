@@ -10,9 +10,9 @@ class Window extends Container<Control> {
 
     /** @private **/ private var __panel:WindowPanel;
 
-    public function new(text:String, width:Float, heigth:Float, x:Float, y:Float) {
+    public function new(text:String, width:Float, heigth:Float, alignType:AlignType = AlignType.VERTICAL, x:Float = 0, y:Float = 0) {
         
-        super(width, heigth, x, y);
+        super(width, heigth, alignType, x, y);
 
         __strip = new WindowStrip(text, width);
 
@@ -77,13 +77,13 @@ private class WindowStrip extends Strip {
 
     public function new(title:String, width:Float) {
         
-        super(width, 0, 0);
+        super(width, VERTICAL, 0, 0);
 
-        label = new Label(title, 4, 2);
+        label = new Label(title, VERTICAL, 4, 2);
 
-        stamp_close = new Stamp(0, width - 20, 4);
+        stamp_close = new Stamp(0, NONE, width - 20, 4);
 
-        stamp_fold = new Stamp(0, width - 36, 4);
+        stamp_fold = new Stamp(0, NONE, width - 36, 4);
     }
 
     override function init():Void {
@@ -115,7 +115,7 @@ private class WindowPanel extends Panel {
 
     public function new(width:Float, heigth:Float, x:Float, y:Float) {
         
-        super(width, heigth, x, y);
+        super(width, heigth, VERTICAL, x, y);
     }
 
     override function __initGraphics() {

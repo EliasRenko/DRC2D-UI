@@ -15,9 +15,9 @@ class Button extends Control {
 
     /** @private **/ private var __threeSlice:ThreeSlice = new ThreeSlice();
     
-    public function new(text:String, width:Float, x:Float, y:Float) {
+    public function new(text:String, width:Float, alignType:AlignType, x:Float, y:Float) {
         
-        super(x, y);
+        super(alignType, x, y);
 
         __bitmapText = new Text(null, text, 0, 0);
 

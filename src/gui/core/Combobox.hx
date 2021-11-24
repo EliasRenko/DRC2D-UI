@@ -1,6 +1,7 @@
 package gui.core;
 
 import gui.events.ControlEventType;
+import gui.core.AlignType;
 
 class Combobox extends Container<Control> {
 
@@ -10,17 +11,15 @@ class Combobox extends Container<Control> {
 
     /** @private **/ private var __panel:ComboboxPanel;
 
-    public function new(width:Float, x:Float, y:Float) {
+    public function new(width:Float, alignType:AlignType, x:Float, y:Float) {
         
-        super(width, 128, x, y);
+        super(width, 128, alignType, x, y);
 
-        __button = new Button('text', width, 0, 0);
+        __button = new Button('text', width, NONE, 0, 0);
 
         __button.addEventListener(__onButtonFocusGain, ON_FOCUS_GAIN);
 
-        __button.addEventListener(__onButtonFocusLost, ON_FOCUS_LOST);
-
-        __panel = new ComboboxPanel(width, 0, 24);
+        __panel = new ComboboxPanel(width, 0, 0);
 
         __panel.list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
 
@@ -38,7 +37,7 @@ class Combobox extends Container<Control> {
 
     public function addItem(value:String):Control {
 
-        var _control:Control = __panel.addControl(new Label(value, 0, 0));
+        var _control:Control = __panel.addControl(new Label(value, VERTICAL, 0, 0));
 
         height = 24 + __panel.height;
 
@@ -59,29 +58,9 @@ class Combobox extends Container<Control> {
         height = 24 + __panel.height;
     }
 
-    override function onMouseLeftClick():Void {
-
-        super.onMouseLeftClick();
-    }
-
-    override function onFocusGain():Void {
-
-        super.onFocusGain();
-    }
-
-    override function onFocusLost():Void {
-
-        super.onFocusLost();
-    }
-
     private function __onButtonFocusGain(control:Control, type:UInt):Void {
         
-        __panel.visible = true;
-    }
-
-    private function __onButtonFocusLost(control:Control, type:UInt):Void {
-        
-        __panel.visible = false;
+        __panel.onFocusGain();
     }
 
     private function __onItemClickEvent(control:Control, type:UInt):Void {
@@ -100,9 +79,11 @@ private class ComboboxPanel extends Panel {
 
     public function new(width:Float, x:Float, y:Float) {
         
-        super(width, 0, x, y);
+        super(width, 0, VERTICAL, x, y);
 
         list = new List(width, 0, 0);
+
+        list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
     }
 
     override function init():Void {
@@ -110,6 +91,8 @@ private class ComboboxPanel extends Panel {
         super.init();
 
         super.addControl(list);
+
+        height = list.height;
 
         visible = false;
     }
@@ -135,5 +118,35 @@ private class ComboboxPanel extends Panel {
         list.removeControlAt(index);
 
         height = list.height;
+    }
+
+    override function onFocusGain():Void {
+
+        visible = true;
+
+        super.onFocusGain();
+    }
+
+    override function onFocusLost():Void {
+
+        visible = false;
+
+        super.onFocusLost();
+    }
+
+    private function __onItemClickEvent(control:Control, type:UInt):Void {
+        
+    }
+
+    override function preUpdate():Bool {
+
+        update();
+
+        return false;
+    }
+
+    override function update() {
+
+        super.update();
     }
 }

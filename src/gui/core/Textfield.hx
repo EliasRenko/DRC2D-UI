@@ -30,7 +30,7 @@ class Textfield extends Control {
 
     public function new(text:String, width:Float, x:Float, y:Float) {
         
-        super(x, y);
+        super(VERTICAL, x, y);
 
         __bitmapText = new Text(null, text, 0, 0);
 

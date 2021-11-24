@@ -2,12 +2,13 @@ package gui.core;
 
 import gui.core.ListItem;
 import gui.events.ControlEventType;
+import gui.core.AlignType;
 
 class List<T:Control> extends Container<ListItem<T>> {
 
-    public function new(width:Float, x:Float, y:Float) {
+    public function new(width:Float, alignType:AlignType = VERTICAL, x:Float = 0, y:Float = 0) {
         
-        super(width, 0, x, y);
+        super(width, 0, alignType, x, y);
 
         type = 'list';
     }

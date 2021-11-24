@@ -12,7 +12,7 @@ class ContextMenu extends Panel {
 
     public function new(width:Float, ?items:Array<String>) {
         
-        super(width, 0, 0, 0);
+        super(width, 0, NONE, 0, 0);
 
         __list = new List(width, 0, 0);
 
@@ -20,7 +20,7 @@ class ContextMenu extends Panel {
 
         for (item in items) {
 
-            var _label:Label = new Label(item, 4, 2);
+            var _label:Label = new Label(item, VERTICAL, 4, 2);
 
             __list.addControl(_label);
         }

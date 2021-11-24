@@ -8,9 +8,9 @@ class Strip extends Container<Control> {
 
     /** @private **/ private var __threeSlice:ThreeSlice = new ThreeSlice();
 
-    public function new(width:Float, x:Float, y:Float) {
+    public function new(width:Float, alignType:AlignType, x:Float, y:Float) {
         
-        super(width, 24, x, y);
+        super(width, 24, alignType, x, y);
 
         type = 'strip';
     }
@@ -56,6 +56,13 @@ class Strip extends Container<Control> {
     public function clear():Void {
 
         __clear();
+    }
+
+    override function onParentResize():Void {
+
+        width = parent.width;
+
+        super.onParentResize();
     }
 
     private function __initGraphics():Void {

@@ -1,6 +1,8 @@
 package gui.core;
 
 import drc.display.Tile;
+import drc.input.MouseControl;
+import drc.utils.Common;
 
 class ListItem<T:Control> extends Container<T> {
 
@@ -14,7 +16,7 @@ class ListItem<T:Control> extends Container<T> {
 
     public function new(control:T, width:Float, y:Float) {
 
-        super(width, 0, 0, y);
+        super(width, 0, VERTICAL, 0, y);
 
         __addControl(control);
 
@@ -62,7 +64,7 @@ class ListItem<T:Control> extends Container<T> {
             onMouseEnter();
         }
 
-        if (____canvas.leftClick) {
+        if (Common.input.mouse.pressed(LEFT_CLICK)) {
              
             onMouseLeftClick();
 

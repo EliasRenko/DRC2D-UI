@@ -6,6 +6,10 @@ import drc.objects.State;
 import drc.display.Tile;
 import drc.display.Tilemap;
 import drc.utils.Common;
+import drc.input.MouseControl;
+import drc.types.WindowEventType;
+import tests.IntroDialog;
+import drc.ds.LinkedList;
 
 import haxe.Json;
 import drc.display.Tileset;
@@ -14,6 +18,8 @@ import drc.display.Region;
 class Canvas {
     
     // ** Publics.
+
+    public var controls(get, null):LinkedList<Control>;
 
     public var dialog(get, set):Dialog;
 
@@ -26,14 +32,6 @@ class Canvas {
     public var mouseX(get, null):Int;
 	
     public var mouseY(get, null):Int;
-    
-    public var leftClick(get, null):Bool;
-
-    public var rightClick(get, null):Bool;
-
-    public var leftClickUp(get, null):Bool;
-
-    public var rightClickUp(get, null):Bool;
 
     public var tilemap:Tilemap;
 
@@ -81,7 +79,7 @@ class Canvas {
 
         __parentState.addGraphic(tilemap);
 
-        charmap = new Charmap(Common.resources.getProfile('res/profiles/font copy.json'), Common.resources.getFont('res/fonts/nokiafc22.json'));
+        charmap = new Charmap(Common.resources.getProfile('res/profiles/font.json'), Common.resources.getFont('res/fonts/nokiafc22.json'));
 
         __parentState.addGraphic(charmap);
 
@@ -94,7 +92,9 @@ class Canvas {
             addControl(__toolstripmenu);
         }
 
-        __dialog = new Dialog('Intro', 256, 256);
+        Common.window.addEventListener(__onWindowResize, WindowEventType.RESIZED);
+
+        __dialog = new IntroDialog();
 
         addControl(__dialog);
 
@@ -113,59 +113,6 @@ class Canvas {
         //addControl(_checkbox);
 
         tilemap.uniforms.get('resolution').value = [640.0, 480.0];
-
-        return;
-
-        // ** 
-
-        var stamp:Stamp = new Stamp(0, 64, 64);
-
-        //addControl(stamp);
-
-        var stamp2:Stamp = new Stamp(1, 0, 0);
-
-        //addControl(stamp2);
-
-        //removeControl(stamp);
-
-        var strip:Strip = new Strip(128, 0, 0);
-
-        strip.addControl(stamp2);
-
-        //addControl(strip);
-
-        //var panel:Panel = new Panel(128, 128, 128, 128);
-
-        //addControl(panel);
-
-        var window:Window = new Window('Options', 128, 256, 190, 128);
-
-        addControl(window);
-
-        //var label:Label = new Label('New Window', 128, 128);
-
-        //addControl(label);
-
-        // var list:List<Control> = new List(128, 128, 128);
-
-        // addControl(list);
-
-        // var _label_1 = list.addControl(new Label('Item1', 0, 0));
-        // list.addControl(new Label('Item2', 0, 0));
-        // var _label_3 = list.addControl(new Label('Item3', 0, 0));
-        // list.addControl(new Label('Item4', 0, 0));
-        // var _label_5 = list.addControl(new Label('Item5', 0, 0));
-
-        // list.removeControl(_label_3);
-        //list.removeControl(_label_5);
-
-        //var slider:Slider = new Slider(230, 256, 68);
-
-        //addControl(slider);
-
-        var button:Button = new Button("Confirm", 128, 128, 32);
-
-        addControl(button);
     }
 
     private function __loadTileset():Tileset {
@@ -243,18 +190,19 @@ class Canvas {
 
             contextMenu.update();
 
-            if (leftClick || rightClick) {
+            if (Common.input.mouse.pressed(ANY)) {
 
                 contextMenu.visible = false;
 
                 contextMenu = null;
             }
-            else 
-            if (contextMenu.visible) {
+            else if (contextMenu.visible) {
 
                 return;
             }
         }
+
+        if (focusedControl.preUpdate()) return;
 
         __container.update();
 
@@ -269,7 +217,23 @@ class Canvas {
 
     }
 
+    private function __onWindowResize(window:drc.system.Window, type:UInt):Void {
+
+        tilemap.uniforms.get('resolution').value = [window.width, window.height];
+
+        __container.resize(window.width, window.height);
+
+        __dialog.x = Math.round(__container.width / 2) - (__dialog.width / 2);
+
+        __dialog.y = Math.round(__container.height / 2) - (__dialog.height / 2);
+    }
+
     // ** Getters and setters.
+
+    private function get_controls():LinkedList<Control> {
+
+		return __container.controls;
+    }
 
     private function get_dialog():Dialog {
         
@@ -345,26 +309,6 @@ class Canvas {
         return __parentState.mouseY;
     }
 
-    private function get_leftClick():Bool {
-
-        return Common.input.mouse.leftClick;
-    }
-
-    private function get_rightClick():Bool {
-
-        return Common.input.mouse.rightClick;
-    }
-
-    private function get_leftClickUp():Bool {
-
-        return Common.input.mouse.leftClick;
-    }
-
-    private function get_rightClickUp():Bool {
-
-        return Common.input.mouse.rightClick;
-    }
-
     #if debug
 
     private function get_debugTilemap():Tilemap {
@@ -379,7 +323,7 @@ private class RootContainer extends Container<Control> {
 
     public function new(width:Float, height:Float) {
 
-        super(width, height, 0, 0);
+        super(width, height, NONE, 0, 0);
 
         __type = "canvas";
     }
@@ -387,6 +331,15 @@ private class RootContainer extends Container<Control> {
     public function addControl(control:Control):Control {
         
         return __addControl(control);
+    }
+
+    public function resize(width:Float, height:Float):Void {
+        
+        this.width = width;
+
+        this.height = height;
+
+        onParentResize();
     }
 
     public function removeControl(control:Control):Void {
@@ -443,7 +396,7 @@ private class CanvasParser {
 
     private function addLabel(text:String, x:Float, y:Float):Label {
         
-        var _label:Label = new Label(text, x, y);
+        var _label:Label = new Label(text, VERTICAL, x, y);
 
         __canvas.addControl(_label);
 
@@ -452,7 +405,7 @@ private class CanvasParser {
 
     private function addButton(text:String, width:Float, x:Float, y:Float):Button {
         
-        var _button:Button = new Button(text, width, x, y);
+        var _button:Button = new Button(text, width, NONE, x, y);
 
         __canvas.addControl(_button);
 

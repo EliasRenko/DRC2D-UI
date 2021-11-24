@@ -7,7 +7,7 @@ import drc.utils.Common;
 import gui.core.Label;
 import gui.core.ThreeSlice;
 
-class Slider extends Control {
+class ProgressBar extends Control {
 
     public var value(get, set):Float;
 
@@ -17,13 +17,9 @@ class Slider extends Control {
 
     public var precision(get, set):Int;
 
-    public var gap:Int = 64;
-
     // ** Privates.
 
-    /** @private **/ private var __bitmapText_desc:Text;
-
-    /** @private **/ private var __bitmapText_value:Text;
+    /** @private **/ private var __bitmapText:Text;
 
     /** @private **/ private var __check:Bool = false;
 
@@ -43,9 +39,7 @@ class Slider extends Control {
         
         super(VERTICAL, x, y);
 
-        __bitmapText_desc = new Text(null, text, 2, 2);
-
-        __bitmapText_value = new Text(null, "", 2, 2);
+        __bitmapText = new Text(null, text, 2, 2);
 
         __graphic = new Tile(null, null);
 
@@ -93,17 +87,11 @@ class Slider extends Control {
 
         ____canvas.tilemap.addTile(__graphic);
 
-        __bitmapText_desc.parent = ____canvas.charmap;
+        __bitmapText.parent = ____canvas.charmap;
 
-        __bitmapText_desc.z = z - 2;
+        __bitmapText.z = z - 2;
 
-        __bitmapText_desc.addToParent();
-
-        __bitmapText_value.parent = ____canvas.charmap;
-
-        __bitmapText_value.z = z - 2;
-
-        __bitmapText_value.addToParent();
+        __bitmapText.addToParent();
 
         value = __value;
 
@@ -119,57 +107,9 @@ class Slider extends Control {
 
         ____canvas.tilemap.removeTile(__graphic);
 
-        __bitmapText_desc.dispose();
-
-        __bitmapText_value.dispose();
+        __bitmapText.dispose();
 
         super.release();
-    }
-
-    override function preUpdate():Bool {
-
-        if (__check && Common.input.mouse.check(MouseControl.LEFT_CLICK)) {
-
-            value = ((____canvas.mouseX - (__x + ____offsetX)) / (width)) * 100;
-
-            return false;
-        }
-
-        __check = false;
-
-        if (Common.input.keyboard.pressed(80)) {
-
-            value -= 1;
-        }
-
-        if (Common.input.keyboard.pressed(79)) {
-            
-            value += 1;
-        }
-
-        return false;
-    }
-
-    override function onMouseLeftClick():Void {
-
-        __check = true;
-
-        super.onMouseLeftClick();
-    }
-
-    override function onMouseHover():Void {
-
-        // if (Common.input.mouse.check(MouseControl.LEFT_CLICK)) {
-
-        //     value = ____canvas.mouseX - (__x + ____offsetX) - 1;
-        // }
-
-        // if (__mouseHold) {
-
-        //     value = ____canvas.mouseX - (__x + ____offsetX) - 1;
-        // }
-
-        super.onMouseHover();
     }
 
     private function __initGraphics():Void {
@@ -185,9 +125,7 @@ class Slider extends Control {
 
     override function __setGraphicX():Void {
 
-        __bitmapText_desc.x = ____offsetX + __x + __width + 7;
-
-        __bitmapText_value.x = Math.round(____offsetX + __x + (__width / 2) - (__bitmapText_value.width / 2));
+        __bitmapText.x = Math.round(____offsetX + __x + (__width / 2) - (__bitmapText.width / 2));
 
         __graphic.x = ____offsetX + __x + 1;
 
@@ -196,9 +134,7 @@ class Slider extends Control {
 
     override function __setGraphicY():Void {
 
-        __bitmapText_desc.y = ____offsetY + __y + 2;
-
-        __bitmapText_value.y = ____offsetY + __y + 2;
+        __bitmapText.y = ____offsetY + __y + 2;
 
         __graphic.y = ____offsetY + __y + 1;
 
@@ -255,12 +191,12 @@ class Slider extends Control {
     }
 
     private function set_value(value:Float):Float {
-        
-        __value = Common.clamp(Common.roundWithPrecision((value * __max) / 100, __precision), __max, __min);
 
-        __bitmapText_value.text = Std.string(__value);
+        __value = Common.clamp(Common.roundWithPrecision((value / __max) * 100, __precision), __max, __min);
 
-        __bitmapText_value.x = Math.round(____offsetX + __x + (__width / 2) - (__bitmapText_value.width / 2));
+        __bitmapText.text = Std.string(__value);
+
+        __bitmapText.x = Math.round(____offsetX + __x + (__width / 2) - (__bitmapText.width / 2));
 
         __graphic.width = (__value / __max) * (width - 2);
 
@@ -271,9 +207,7 @@ class Slider extends Control {
 
         __threeSlice.setWidth(value);
 
-        __bitmapText_desc.x = __value + 2;
-
-        __bitmapText_value.x = (value / 2) - (__bitmapText_value.width / 2);
+        __bitmapText.x = (value / 2) - (__bitmapText.width / 2);
 
         return super.set_width(value);
     }

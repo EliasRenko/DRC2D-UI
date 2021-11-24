@@ -1,8 +1,10 @@
 package gui.core;
 
-import gui.core.AlignType;
 import drc.core.EventDispacher;
+import drc.input.MouseControl;
 import drc.math.Rectangle;
+import drc.utils.Common;
+import gui.core.AlignType;
 import gui.events.ControlEvent;
 import gui.events.ControlEventType;
 
@@ -12,13 +14,15 @@ class Control extends EventDispacher<Control> {
 
     public var active(get, null):Bool;
 
-    public var alignType(get, null):AlignType;
+    public var alignType(get, set):AlignType;
 
     public var canvas(get, null):Canvas;
 
     public var contextMenu(get, set):ContextMenu;
 
     public var height(get, set):Float;
+
+    public var focused(get, set):Bool;
 
     public var parent(get, null):Control;
 
@@ -38,15 +42,11 @@ class Control extends EventDispacher<Control> {
 
     /** @private **/ private var __active:Bool = false;
 
-    /** @private **/ private var __alignType:AlignType = VERTICAL;
-
-    /** @private **/ private var __alignOffset:Int = 2;
-
     /** @private **/ private var __contextMenu:ContextMenu;
 
     /** @private **/ private var __focused:Bool = false;
 
-    /** @private **/ private var __height:Float;
+    /** @private **/ private var __height:Float = 0;
 
     /** @private **/ private var __hitbox:Rectangle;
 
@@ -54,9 +54,13 @@ class Control extends EventDispacher<Control> {
 
     /** @private **/ private var __type:String = "";
 
+    /** @private **/ private var __paddingX:Int = 4;
+
+    /** @private **/ private var __paddingY:Int = 4;
+
     /** @private **/ private var __visible:Bool = true;
 
-    /** @private **/ private var __width:Float;
+    /** @private **/ private var __width:Float = 0;
 
     /** @private **/ private var __x:Float = 0;
 
@@ -66,19 +70,21 @@ class Control extends EventDispacher<Control> {
 
     // ** Privates with access.
 
+    /** @private **/ @:noCompletion private var ____alignType:AlignType = AlignType.VERTICAL;
+
     /** @private **/ @:noCompletion private var ____canvas:Canvas;
 
     /** @private **/ @:noCompletion private var ____offsetX:Float = 0;
 	
     /** @private **/ @:noCompletion private var ____offsetY:Float = 0;
-
-    /** @private **/ @:noCompletion private var ____shouldAlign:Bool = true;
     
     /** @private **/ @:noCompletion private var ____parent:Control;
 
-    public function new(x:Float, y:Float) {
+    public function new(alignType:AlignType, x:Float, y:Float) {
 
         super();
+
+        ____alignType = alignType;
 
         __x = x;
 
@@ -97,6 +103,8 @@ class Control extends EventDispacher<Control> {
     }
 
     public function release():Void {
+
+        __active = false;
 
         clearEventListeners();
     }
@@ -117,6 +125,11 @@ class Control extends EventDispacher<Control> {
         return false;
     }
 
+    public function preUpdate():Bool {
+        
+        return false;
+    }
+
     public function update():Void {
         
         if (__hover) {
@@ -128,7 +141,7 @@ class Control extends EventDispacher<Control> {
             onMouseEnter();
         }
 
-        if (____canvas.leftClick) {
+        if (Common.input.mouse.pressed(MouseControl.LEFT_CLICK)) {
              
             onMouseLeftClick();
 
@@ -138,7 +151,7 @@ class Control extends EventDispacher<Control> {
             }
         }
 
-        if (____canvas.rightClick) {
+        if (Common.input.mouse.pressed(MouseControl.RIGHT_CLICK)) {
              
             var _contextMenu:ContextMenu = contextMenu;
 
@@ -154,6 +167,10 @@ class Control extends EventDispacher<Control> {
 
             onMouseRightClick();
         }
+    }
+
+    public function focuseUpdate():Void {
+
     }
 
     public function onMouseLeftClick():Void {
@@ -206,6 +223,10 @@ class Control extends EventDispacher<Control> {
         dispatchEvent(this, ON_VISIBILITY_CHANGE);
     }
 
+    public function onParentResize():Void {
+        
+    }
+
     public function onFocusGain():Void {
         
         if (__focused) return;
@@ -235,6 +256,38 @@ class Control extends EventDispacher<Control> {
     // ** Privates with access.
 
     @:noCompletion
+    private function ____alignTo(control:Null<Control>):Void {
+
+        if (control == null) {
+
+            ____setPositionX(__paddingX);
+
+            ____setPositionY(__paddingY);
+
+            return;
+        }
+
+        switch (this.alignType) {
+
+            case NONE: 
+
+                return;
+
+            case VERTICAL: 
+
+                ____setPositionX(__paddingX);
+
+                ____setPositionY(control.y + control.height + __paddingY);
+
+            case HORIZONTAL:
+
+                ____setPositionX(control.x + control.width + __paddingX);
+
+                ____setPositionY(control.y);
+        }
+    }
+
+    @:noCompletion
     private function ____setOffsetX(value:Float):Void {
         
         ____offsetX = value;
@@ -250,6 +303,22 @@ class Control extends EventDispacher<Control> {
         __setGraphicY();
     }
 
+    @:noCompletion
+    private function ____setPositionX(value:Float):Void {
+        
+        __x = value;
+
+        __setGraphicX();
+    }
+
+    @:noCompletion
+    private function ____setPositionY(value:Float):Void {
+        
+        __y = value;
+
+        __setGraphicY();
+    }
+
     // ** Getters and setters.
 
     private function get_active():Bool {
@@ -259,7 +328,14 @@ class Control extends EventDispacher<Control> {
 
     private function get_alignType():AlignType {
 
-		return __alignType;
+		return ____alignType;
+	}
+
+    private function set_alignType(value:AlignType):AlignType {
+
+        ____alignType = value;
+
+		return value;
 	}
 	
 	private function set_active(value:Bool):Bool {
@@ -301,6 +377,16 @@ class Control extends EventDispacher<Control> {
         onSizeChange();
 
 		return value;
+    }
+
+    private function get_focused():Bool {
+        
+        return __focused;
+    }
+
+    private function set_focused(value:Bool):Bool {
+
+        return false; // ** Impl
     }
     
     private function get_parent():Control {
@@ -346,13 +432,16 @@ class Control extends EventDispacher<Control> {
 	
 	private function set_x(value:Float):Float {
 
-        __x = value;
+        if (alignType == NONE) {
 
-        __setGraphicX();
+            __x = value;
 
-        onLocationChange();
+            __setGraphicX();
 
-		return value;
+            onLocationChange();
+        }
+
+		return __x;
 	}
 	
 	private function get_y():Float {
@@ -362,13 +451,16 @@ class Control extends EventDispacher<Control> {
 	
 	private function set_y(value:Float):Float {
 
-        __y = value;
+        if (alignType == NONE) {
 
-        __setGraphicY();
+            __y = value;
 
-        onLocationChange();
+            __setGraphicY();
 
-		return value;
+            onLocationChange();
+        }
+
+		return __y;
 	}
 	
 	private function get_z():Float {

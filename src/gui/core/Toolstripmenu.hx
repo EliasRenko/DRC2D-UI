@@ -19,11 +19,9 @@ class Toolstripmenu extends Container<Control> {
 
     public function new() {
         
-        super(640, 24, 0, 0);
+        super(0, 24, NONE, 0, 0);
 
         __strip = new ToolstripBar();
-
-        __alignOffset = 0;
 
         __type = 'toolstrip';
     }
@@ -31,6 +29,8 @@ class Toolstripmenu extends Container<Control> {
     override function init():Void {
 
         __addControl(__strip);
+
+        width = parent.width;
 
         super.init();
     }
@@ -53,7 +53,7 @@ class Toolstripmenu extends Container<Control> {
 
         for (option in options) {
 
-            _toolstripPanel.addControl(new Label(option, 8, 2));
+            _toolstripPanel.addControl(new Label(option, HORIZONTAL, 8, 2));
         }
 
         return _label;
@@ -78,6 +78,13 @@ class Toolstripmenu extends Container<Control> {
         onItemClick();
     }
 
+    override function onParentResize():Void {
+
+        width = parent.width;
+
+        super.onParentResize();
+    }
+
     // ** Getters and setters.
 
     private function get_selection():String {
@@ -96,7 +103,7 @@ private class ToolstripLabel extends Label {
 
         toolstripPanel.visible = false;
 
-        super(text, x, y);
+        super(text, HORIZONTAL, x, y);
     }
 
     override function release():Void {
@@ -135,13 +142,11 @@ private class ToolstripPanel extends Panel {
 
     public function new(width:Float, x:Float, y:Float) {
         
-        super(width, 0, x, y);
+        super(width, 0, NONE, x, y);
 
         list = new List(width, 0, 0);
 
         list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
-
-        ____shouldAlign = false;
     }
 
     override function init():Void {

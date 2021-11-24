@@ -10,9 +10,9 @@ class Label extends Control {
 
     private var __bitmapText:Text;
 
-    public function new(text:String, x:Float, y:Float) {
+    public function new(text:String, alignType:AlignType = VERTICAL, x:Float = 0, y:Float = 0) {
         
-        super(x, y);
+        super(alignType, x, y);
 
         __bitmapText = new Text(null, text, x, y);
 
