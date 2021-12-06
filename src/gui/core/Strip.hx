@@ -8,9 +8,11 @@ class Strip extends Container<Control> {
 
     /** @private **/ private var __threeSlice:ThreeSlice = new ThreeSlice();
 
-    public function new(width:Float, alignType:AlignType, x:Float, y:Float) {
+    public function new(width:Float, alignType:AlignType = VERTICAL, x:Float = 0, y:Float = 0) {
         
         super(width, 24, alignType, x, y);
+
+        __padding = {left: 0, right: 0, top: 0, bottom: 0};
 
         type = 'strip';
     }

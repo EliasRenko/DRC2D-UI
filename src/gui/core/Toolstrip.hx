@@ -10,7 +10,7 @@ class Toolstrip extends Strip {
 
     public function new(width:Float, x:Float, y:Float) {
         
-        super(width, NONE, x, y);
+        super(width, VERTICAL, x, y);
     }
 
     override function addControl(control:Control):Control {

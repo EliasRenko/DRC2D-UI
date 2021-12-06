@@ -10,7 +10,7 @@ class Container<T:Control> extends Control {
 
     // ** Publics.
 
-    public var controls(get, null):__ControlList<T>;
+    public var controls(get, null):LinkedList<T>;
 
     // ** Privates.
 
@@ -39,6 +39,8 @@ class Container<T:Control> extends Control {
 
             __initControl(control);
         }
+
+        __controls.align(__controls.first());
     }
 
     override function release():Void {
@@ -60,6 +62,22 @@ class Container<T:Control> extends Control {
         //__alignControl(control);
 
         __controls.add(control);
+
+        control.dispatchEvent(control, ADDED);
+
+        return control;
+    }
+
+    private function __addControlAfter(prev:Control, control:T):T {
+        
+        if (control.active) return control;
+
+        if (____canvas != null) {
+			
+			__initControl(control);
+		}
+
+        __controls.addAfter(prev, control);
 
         control.dispatchEvent(control, ADDED);
 
@@ -125,95 +143,6 @@ class Container<T:Control> extends Control {
             control.onParentResize();
         }
     }
-
-    private function __alignControl(control:Control):Void {
-
-        var _last:Null<Control> = __controls.last();
-
-        if (_last == null) {
-
-            trace('Last is null');
-
-            control.x = control.__paddingX;
-
-            control.y = control.__paddingY;
-
-            return;
-        }
-
-        @:privateAccess control.____alignTo(_last);
-
-        return;
-
-        switch (control.alignType) {
-
-            case NONE: 
-
-                return;
-
-            case VERTICAL: 
-
-                control.x = __paddingX;
-
-                control.y = _last.y + _last.height + control.__paddingY;
-
-            case HORIZONTAL:
-
-                control.x = _last.x + _last.width + control.__paddingX;
-
-                control.y = __paddingY;
-        }
-    }
-
-    private function __alignControlOld(control:Control):Void {
-
-        // ** Define metadata `privateAccess`.
-        // if (@:privateAccess control.____shouldAlign) {
-
-        //     if (control.x == 0 || control.y == 0) {
-
-        //         if (__lastAlignedControl == null) {
-
-        //             control.x = control.__paddingX;
-
-        //             control.y = control.__paddingY;
-
-        //             __controlsHeight = control.y + control.height;
-        //         }
-        //         else {
-
-        //             switch (control.alignType) {
-
-        //                 case NONE: 
-
-        //                     return;
-
-        //                 case VERTICAL: 
-
-        //                     control.x = __paddingX;
-
-        //                     control.y = __lastAlignedControl.y + __lastAlignedControl.height + control.__paddingY;
-
-        //                     __controlsHeight = control.y + control.height;
-
-        //                 case HORIZONTAL:
-
-        //                     control.x = __lastAlignedControl.x + __lastAlignedControl.width + control.__paddingX;
-
-        //                     control.y = __paddingY;
-        //             }
-
-        //         }
-
-        //         __lastAlignedControl = control;
-        //     }
-        // }
-    }
-
-    private function __dockControl(control:Control):Void {
-
-        
-    }
     
     private function __initControl(control:Control) {
         
@@ -274,7 +203,7 @@ class Container<T:Control> extends Control {
 
     // ** Getters and setters.
 
-    private function get_controls():__ControlList<T> {
+    private function get_controls():LinkedList<T> {
 
 		return __controls;
     }
@@ -374,6 +303,68 @@ private class __ControlList<T:Control> extends LinkedList<T> {
         @:privateAccess _object.item.____alignTo(null);
     }
 
+    public function addAfter(control:Control, item:T):Void {
+        
+        var _object = __createNode(item, null, null);
+
+        var prev:IListObject<T> = null;
+
+        var alignToPrev:Null<IListObject<T>> = null;
+
+        var _current = __first;
+
+        if (first == null) add(item);
+
+        while (_current != null) {
+
+			if (_current.item == control) {
+
+                if (__last == _current) {
+
+					__last = _object;
+                }
+                else {
+
+                    _object.next = _current.next;
+                }
+
+                _current.next = _object;
+
+                _object.prev = _current;
+
+                while (_current != null) {
+
+                    if (_current.item.alignType != AlignType.NONE) {
+        
+                        if (alignToPrev == null) {
+
+                            @:privateAccess _current.item.____alignTo(null);
+                        }
+                        else {
+
+                            @:privateAccess _current.item.____alignTo(alignToPrev.item);
+                        }
+                    }
+
+                    alignToPrev = _current;
+        
+                    _current = _current.next;
+                }
+
+                return;
+            }
+
+            if (_current.item.alignType != AlignType.NONE) {
+
+                alignToPrev = _current;
+            }
+
+			prev = _current;
+
+			_current = _current.next;
+        }
+    }
+
     override function remove(item:Control):Bool {
 
         var prev:IListObject<T> = null;
@@ -468,8 +459,60 @@ private class __ControlList<T:Control> extends LinkedList<T> {
 		return false;
     }
 
-    public function align(node:IListObject<T>):Void {
+    public function align(item:Null<T>):Void {
         
+        if (item == null) return;
+
+        var _current:IListObject<T> = __first;
+
+        var _alignTo:Null<IListObject<T>> = null;
+
+		while (_current != null) {
+
+			if (_current.item == item) {
+
+                if (_alignTo == null) {
+
+                    @:privateAccess _current.item.____alignTo(null);
+                }
+                else {
+
+                    @:privateAccess _current.item.____alignTo(_alignTo.item);
+                }
+
+                _alignTo = _current;
+
+                _current = _current.next;
+
+                while (_current != null) {
+                    
+                    if (_current.item.alignType != AlignType.NONE) {
+
+                        if (_alignTo == null) {
+
+                            @:privateAccess _current.item.____alignTo(null);
+                        }
+                        else {
+
+                            @:privateAccess _current.item.____alignTo(_alignTo.item);
+                        }
+
+                        _alignTo = _current;
+                    }
+
+                    _current = _current.next;
+                }
+
+                break;
+			}
+
+            if (_current.item.alignType != AlignType.NONE) {
+
+                _alignTo = _current;
+            }
+
+			_current = _current.next;
+		}
     }
 
     public function alignNodes(node:IListObject<T>):Void {

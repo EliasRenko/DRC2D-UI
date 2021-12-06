@@ -328,6 +328,11 @@ private class RootContainer extends Container<Control> {
         __type = "canvas";
     }
 
+    override function init() {
+
+        super.init();
+    }
+
     public function addControl(control:Control):Control {
         
         return __addControl(control);

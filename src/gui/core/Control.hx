@@ -8,6 +8,17 @@ import gui.core.AlignType;
 import gui.events.ControlEvent;
 import gui.events.ControlEventType;
 
+typedef Directions = {
+
+    var left:Float;
+
+    var right:Float;
+
+    var top:Float;
+
+    var bottom:Float;
+}
+
 class Control extends EventDispacher<Control> {
 
     // ** Publics.
@@ -24,9 +35,11 @@ class Control extends EventDispacher<Control> {
 
     public var focused(get, set):Bool;
 
+    public var padding(get, set):Directions;
+
     public var parent(get, null):Control;
 
-    public var type(get, null):String;
+    public var type(get, default):String;
 
     public var visible(get, set):Bool;
 
@@ -54,9 +67,11 @@ class Control extends EventDispacher<Control> {
 
     /** @private **/ private var __type:String = "";
 
-    /** @private **/ private var __paddingX:Int = 4;
+    /** @private **/ private var __paddingX:Int = 2;
 
-    /** @private **/ private var __paddingY:Int = 4;
+    /** @private **/ private var __paddingY:Int = 2;
+
+    /** @private **/ private var __padding:Directions = {left: 2, right: 2, top: 2, bottom: 2};
 
     /** @private **/ private var __visible:Bool = true;
 
@@ -152,21 +167,17 @@ class Control extends EventDispacher<Control> {
         }
 
         if (Common.input.mouse.pressed(MouseControl.RIGHT_CLICK)) {
-             
-            var _contextMenu:ContextMenu = contextMenu;
 
-            if (_contextMenu == null) return;
+            if (contextMenu == null) return;
 
-            _contextMenu.visible = true;
-
-            _contextMenu.x = ____canvas.mouseX;
-
-            _contextMenu.y = ____canvas.mouseY;
-
-            ____canvas.contextMenu = contextMenu;
+            contextMenu.show(this);
 
             onMouseRightClick();
         }
+    }
+
+    public function onContextMenuSelect(value:String):Void {
+        
     }
 
     public function focuseUpdate():Void {
@@ -260,9 +271,9 @@ class Control extends EventDispacher<Control> {
 
         if (control == null) {
 
-            ____setPositionX(__paddingX);
+            ____setPositionX(__padding.left);
 
-            ____setPositionY(__paddingY);
+            ____setPositionY(__padding.top);
 
             return;
         }
@@ -275,13 +286,13 @@ class Control extends EventDispacher<Control> {
 
             case VERTICAL: 
 
-                ____setPositionX(__paddingX);
+                ____setPositionX(padding.left);
 
-                ____setPositionY(control.y + control.height + __paddingY);
+                ____setPositionY(control.y + control.height + control.padding.bottom + __padding.top);
 
             case HORIZONTAL:
 
-                ____setPositionX(control.x + control.width + __paddingX);
+                ____setPositionX(control.x + control.width + control.padding.right + __padding.left);
 
                 ____setPositionY(control.y);
         }
@@ -351,11 +362,6 @@ class Control extends EventDispacher<Control> {
     }
 
     private function get_contextMenu():ContextMenu {
-        
-        if (__contextMenu == null) {
-
-            return parent.contextMenu;
-        }
 
         return __contextMenu;
     }
@@ -387,6 +393,18 @@ class Control extends EventDispacher<Control> {
     private function set_focused(value:Bool):Bool {
 
         return false; // ** Impl
+    }
+
+    private function get_padding():Directions {
+        
+        return __padding;
+    }
+
+    private function set_padding(value:Directions):Directions {
+        
+        __padding = value;
+
+        return __padding;
     }
     
     private function get_parent():Control {

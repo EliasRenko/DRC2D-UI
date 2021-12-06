@@ -19,9 +19,11 @@ class Toolstripmenu extends Container<Control> {
 
     public function new() {
         
-        super(0, 24, NONE, 0, 0);
+        super(0, 24, VERTICAL, 0, 0);
 
         __strip = new ToolstripBar();
+
+        __padding = {left: 0, right: 0, top: 0, bottom: 0};
 
         __type = 'toolstrip';
     }
@@ -37,7 +39,7 @@ class Toolstripmenu extends Container<Control> {
 
     public function addItem(text:String, options:Array<String>):Label {
         
-        var _toolstripPanel:ToolstripPanel = new ToolstripPanel(128, 0, 24);
+        var _toolstripPanel:ToolstripPanel = new ToolstripPanel(128);
 
         _toolstripPanel.list.addEventListener(__onItemClickEvent, ON_ITEM_CLICK);
 
@@ -47,13 +49,19 @@ class Toolstripmenu extends Container<Control> {
 
         var _label:ToolstripLabel = new ToolstripLabel(text, _toolstripPanel, 0, 0);
 
+        _label.padding = {left: 4, right: 8, top: 2, bottom: 0};
+
         __strip.addControl(_label);
 
         // ** 
 
         for (option in options) {
 
-            _toolstripPanel.addControl(new Label(option, HORIZONTAL, 8, 2));
+            var _option = new Label(option, VERTICAL);
+
+            _option.padding = {left: 4, right: 0, top: 2, bottom: 0};
+
+            _toolstripPanel.addControl(_option);
         }
 
         return _label;
@@ -118,19 +126,19 @@ private class ToolstripLabel extends Label {
         toolstripPanel.onFocusGain();
     }
 
-    override function set_x(value:Float):Float {
+    override function ____alignTo(control:Null<Control>):Void {
 
-        toolstripPanel.x = value;
+        super.____alignTo(control);
 
-        return super.set_x(value);
+        toolstripPanel.x = __x;
     }
 }
 
-private class ToolstripBar extends Toolstrip {
+private class ToolstripBar extends Strip {
 
     public function new() {
         
-        super(640, 0, 0);
+        super(640);
     }
 }
 
@@ -140,9 +148,9 @@ private class ToolstripPanel extends Panel {
 
     public var list:List<Control>;
 
-    public function new(width:Float, x:Float, y:Float) {
+    public function new(width:Float) {
         
-        super(width, 0, NONE, x, y);
+        super(width, 0, NONE, 0, 24);
 
         list = new List(width, 0, 0);
 

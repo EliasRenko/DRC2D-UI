@@ -41,7 +41,7 @@ class Panel extends Container<Control> {
 
         __scrollBar.visible = false;
 
-        addControl(__scrollBar);
+        //addControl(__scrollBar);
 
         super.init();
     }
@@ -146,7 +146,7 @@ class Panel extends Container<Control> {
 
         __nineSlice.setVisible(value);
 
-        __scrollBar.visible = value;
+        //__scrollBar.visible = value;
 
         return super.set_visible(value);
     }

@@ -84,6 +84,8 @@ private class WindowStrip extends Strip {
         stamp_close = new Stamp(0, NONE, width - 20, 4);
 
         stamp_fold = new Stamp(0, NONE, width - 36, 4);
+
+        __padding = {left: 0, right: 0, top: 0, bottom: 0};
     }
 
     override function init():Void {
@@ -116,6 +118,8 @@ private class WindowPanel extends Panel {
     public function new(width:Float, heigth:Float, x:Float, y:Float) {
         
         super(width, heigth, VERTICAL, x, y);
+
+        __padding = {left: 0, right: 0, top: 0, bottom: 0};
     }
 
     override function __initGraphics() {

@@ -14,13 +14,15 @@ class ListItem<T:Control> extends Container<T> {
 
     /** @private **/ private var __graphic:Tile;
 
-    public function new(control:T, width:Float, y:Float) {
+    public function new(control:T, width:Float) {
 
-        super(width, 0, VERTICAL, 0, y);
+        super(width, 0, VERTICAL, 0, 0);
 
         __addControl(control);
 
         __graphic = new Tile(null, null);
+
+        __padding = {left: 0, right: 0, top: 0, bottom: 0};
 
         __type = 'listitem';
     }
@@ -73,6 +75,15 @@ class ListItem<T:Control> extends Container<T> {
                 //onFocusGain();
             }
         }
+
+        if (Common.input.mouse.pressed(MouseControl.RIGHT_CLICK)) {
+
+            if (contextMenu == null) return;
+
+            contextMenu.show(this);
+
+            onMouseRightClick();
+        }
     }
 
     override function onMouseEnter():Void {
@@ -106,6 +117,11 @@ class ListItem<T:Control> extends Container<T> {
         var _first = __controls.first();
 
         return _first;
+    }
+
+    override function get_height():Float {
+
+        return super.get_height();
     }
 
     override function set_visible(value:Bool):Bool {
