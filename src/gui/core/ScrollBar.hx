@@ -41,7 +41,7 @@ class ScrollBar extends Control {
 
         __threeSlice.get(0).id = ____canvas.tilemap.tileset.names.get('scrollBar_0');
 
-        __threeSlice.get(1).id = ____canvas.tilemap.tileset.names.get('scrollBar_1');
+        __threeSlice.get(1).id = ____canvas.tilemap.tileset.names.get('panel_1');
 
         __threeSlice.get(2).id = ____canvas.tilemap.tileset.names.get('scrollBar_2');
     }

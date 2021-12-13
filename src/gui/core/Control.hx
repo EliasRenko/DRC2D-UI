@@ -51,6 +51,10 @@ class Control extends EventDispacher<Control> {
 
     public var z(get, set):Float;
 
+    public var mask:Rectangle = new Rectangle(1, 1, 1, 1);
+
+    public var shouldMask:Bool = false;
+
     // ** Privates.
 
     /** @private **/ private var __active:Bool = false;
@@ -174,6 +178,13 @@ class Control extends EventDispacher<Control> {
 
             onMouseRightClick();
         }
+    }
+
+    public function setMask(rectangle:Rectangle):Void {
+        
+        shouldMask = true;
+
+        mask = rectangle;
     }
 
     public function onContextMenuSelect(value:String):Void {

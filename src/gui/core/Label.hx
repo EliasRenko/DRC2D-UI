@@ -1,5 +1,6 @@
 package gui.core;
 
+import drc.math.Rectangle;
 import drc.display.Text;
 
 class Label extends Control {
@@ -30,6 +31,24 @@ class Label extends Control {
         __width = __bitmapText.width;
 
         __height = __bitmapText.height;
+
+        setMask(mask);        
+    }
+
+    override function setMask(rectangle:Rectangle) {
+
+        super.setMask(rectangle);
+
+        for (i in 0...__bitmapText.__characters.length) {
+
+            __bitmapText.__characters[i].setAttribute("mx", rectangle.x);
+
+            __bitmapText.__characters[i].setAttribute("my", rectangle.y);
+
+            __bitmapText.__characters[i].setAttribute("mw", rectangle.width);
+
+            __bitmapText.__characters[i].setAttribute("mh", rectangle.height);
+        }
     }
 
     override function release():Void {

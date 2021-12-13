@@ -53,9 +53,17 @@ class ListItem<T:Control> extends Container<T> {
 
     override function update():Void {
 
-        var control:Control = __controls.first();
+        //var control:Control = __controls.first();
 
-        if (control.hitTest()) control.update();
+        //if (control.hitTest()) control.update();
+
+        for (control in __controls) {
+
+            if (control.hitTest()) {
+
+                control.update();
+            }
+        }
 
         if (__hover) {
 

@@ -3,8 +3,9 @@ package gui.core;
 import gui.core.ListItem;
 import gui.events.ControlEventType;
 import gui.core.AlignType;
+import gui.core.Treeview;
 
-class Treeview extends Container<ListItem<Label>> {
+class Treeview extends Container<ListItem<Control>> {
 
     private var __rootNode:RootTreeviewItem;
 
@@ -53,7 +54,7 @@ class Treeview extends Container<ListItem<Label>> {
             parentNode = __rootNode;
         }
 
-        var _listItem:TreeviewItem = new TreeviewItem(parentNode, control, __treeviewItemMenu, width);
+        var _listItem:TreeviewItem = new TreeviewItem(parentNode, control, width);
 
         _listItem.type = Std.string(index);
 
@@ -66,8 +67,6 @@ class Treeview extends Container<ListItem<Label>> {
         __addControl(_listItem);
 
         if (____canvas != null) {
-            
-            //_listItem.y = height;
 
             __height = _listItem.y + _listItem.height + _listItem.padding.top;
 		}
@@ -77,7 +76,7 @@ class Treeview extends Container<ListItem<Label>> {
 
     public function addAfter(prev:Control, parentNode:TreeviewItem, control:Label):Control {
         
-        var _listItem:TreeviewItem = new TreeviewItem(parentNode, control, __treeviewItemMenu, width);
+        var _listItem:TreeviewItem = new TreeviewItem(parentNode, control, width);
 
         _listItem.addEventListener(__onItemClickEvent, LEFT_CLICK);
 
@@ -87,7 +86,7 @@ class Treeview extends Container<ListItem<Label>> {
 
         if (____canvas != null) {
             
-            var _last:Null<ListItem<Label>> = controls.last();
+            var _last:Null<ListItem<Control>> = controls.last();
 
             //__height = _listItem.y + _listItem.height + _listItem.padding.top;
 
@@ -97,7 +96,12 @@ class Treeview extends Container<ListItem<Label>> {
         return _listItem;
     }
 
-    public function removeControl(control:Label):Bool {
+    public function alignFrom(control:TreeviewItem):Void {
+        
+        __alignFrom(control);
+    }
+
+    public function removeControl(control:Control):Bool {
 
         for (listItem in __controls) {
 
@@ -173,45 +177,13 @@ class Treeview extends Container<ListItem<Label>> {
 
 private class RootTreeviewItem extends TreeviewItem {
 
-    public function new(parentNode:ListItem<Label>, control:Label, width:Float) {
+    public function new(parentNode:TreeviewItem, control:Label, width:Float) {
         
-        super(parentNode, control, null, width);
+        super(parentNode, control, width);
     }
 
     override function setPadding():Void {
 
-    }
-}
-
-private class TreeviewItem extends ListItem<Label> {
-    
-    public var parentNode:ListItem<Label>;
-
-    public var items:Array<ListItem<Label>>;
-
-    public function new(parentNode:ListItem<Label>, control:Label, menu:TreeviewItemMenu, width:Float) {
-        
-        super(control, width);
-
-        this.parentNode = parentNode;
-
-        contextMenu = menu;
-
-        setPadding();
-    }
-
-    public function setPadding():Void {
-        
-        padding.left = parentNode.padding.left + 8;
-    }
-
-    override function onContextMenuSelect(value:String) {
-        
-        var _treeview:Treeview = cast parent;
-
-        //_treeview.addControl(this, new Label("New Item"));
-
-        _treeview.addAfter(this, this, new Label("New Item"));
     }
 }
 

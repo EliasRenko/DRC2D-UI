@@ -1,5 +1,6 @@
 package gui.core;
 
+import drc.math.Rectangle;
 import gui.core.NineSlice;
 import gui.core.ScrollBar;
 
@@ -41,7 +42,11 @@ class Panel extends Container<Control> {
 
         __scrollBar.visible = false;
 
-        //addControl(__scrollBar);
+        addControl(__scrollBar);
+
+        mask = new Rectangle(__x + ____offsetX, __y + ____offsetY, width, __height);
+
+        shouldMask = true;
 
         super.init();
     }

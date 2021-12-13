@@ -79,7 +79,7 @@ class Canvas {
 
         __parentState.addGraphic(tilemap);
 
-        charmap = new Charmap(Common.resources.getProfile('res/profiles/font.json'), Common.resources.getFont('res/fonts/nokiafc22.json'));
+        charmap = new Charmap(Common.resources.getProfile('res/profiles/uiFont.json'), Common.resources.getFont('res/fonts/nokiafc22.json'));
 
         __parentState.addGraphic(charmap);
 
@@ -113,6 +113,8 @@ class Canvas {
         //addControl(_checkbox);
 
         tilemap.uniforms.get('resolution').value = [640.0, 480.0];
+
+        charmap.uniforms.get('resolution').value = [640.0, 480.0];
     }
 
     private function __loadTileset():Tileset {

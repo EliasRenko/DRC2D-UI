@@ -13,7 +13,7 @@ class Stamp extends Control {
 
     /** @private **/ private var __graphic:Tile;
 
-    public function new(id:UInt, alignType:AlignType, x:Float, y:Float) {
+    public function new(id:UInt, alignType:AlignType = VERTICAL, x:Float = 0, y:Float = 0) {
         
         super(alignType, x, y);
 

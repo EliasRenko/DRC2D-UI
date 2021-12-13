@@ -1,14 +1,9 @@
 package gui.core;
 
-import drc.math.Rectangle;
-import haxe.xml.Fast;
-import drc.ds.IListObject;
-import drc.ds.LinkedList;
 import gui.core.Control;
-import gui.events.ControlEventType;
 
-class Container<T:Control> extends Control {
-
+class LayoutH<T:Control> extends Control {
+    
     // ** Publics.
 
     public var controls(get, null):LinkedList<T>;
@@ -16,10 +11,6 @@ class Container<T:Control> extends Control {
     // ** Privates.
 
     /** @private **/ private var __controls:__ControlList<T> = new __ControlList<T>();
-
-    /** @private **/ private var __controlsHeight:Float = 0;
-
-    /** @private **/ private var __lastAlignedControl:Null<Control> = null;
 
     public function new(width:Float, height:Float, alignType:AlignType, x:Float, y:Float) {
         
@@ -51,6 +42,21 @@ class Container<T:Control> extends Control {
         super.release();
     }
 
+    override function update():Void {
+
+        for (control in __controls) {
+
+            if (control.hitTest()) {
+
+                control.update();
+
+                return;
+            }
+        }
+
+        super.update();
+    }
+
     private function __addControl(control:T):T {
         
         if (control.active) return control;
@@ -60,34 +66,11 @@ class Container<T:Control> extends Control {
 			__initControl(control);
 		}
 
-        //__alignControl(control);
-
         __controls.add(control);
 
         control.dispatchEvent(control, ADDED);
 
         return control;
-    }
-
-    private function __addControlAfter(prev:Control, control:T):T {
-        
-        if (control.active) return control;
-
-        if (____canvas != null) {
-			
-			__initControl(control);
-		}
-
-        __controls.addAfter(prev, control);
-
-        control.dispatchEvent(control, ADDED);
-
-        return control;
-    }
-
-    private function __alignFrom(control:T):Void {
-        
-        __controls.alignFrom(control);
     }
 
     private function __removeControl(control:T):Void {
@@ -110,46 +93,6 @@ class Container<T:Control> extends Control {
         }
 	}
 
-    override function update():Void {
-
-        for (control in __controls) {
-
-            if (control.hitTest()) {
-
-                control.update();
-
-                return;
-            }
-        }
-
-        super.update();
-    }
-
-    override function onMouseEnter():Void {
-
-        super.onMouseEnter();
-    }
-
-    override function onMouseLeave():Void {
-
-        super.onMouseLeave();
-    }
-
-    override function onMouseHover():Void {
-
-        super.onMouseHover();
-    }
-
-    override function onParentResize() {
-
-        super.onParentResize();
-
-        for (control in __controls) {
-
-            control.onParentResize();
-        }
-    }
-    
     private function __initControl(control:Control) {
         
         @:privateAccess control.____canvas = ____canvas; // ** Define metadata privateAccess.
@@ -268,22 +211,6 @@ class Container<T:Control> extends Control {
         }
 
         return value;
-    }
-}
-
-private class __ControlListH<T:Control> extends __ControlList<T> {
-
-    public function new() {
-        
-        super();
-    }
-}
-
-private class __ControlListV<T:Control> extends __ControlList<T> {
-
-    public function new() {
-        
-        super();
     }
 }
 
